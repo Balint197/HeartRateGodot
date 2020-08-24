@@ -1,7 +1,10 @@
 extends Control
 
 
-onready var HR = 0
+onready var currentHR = 0
+
+func _ready():
+	$Label.text = str(currentHR)
 
 func _on_Timer_timeout():
 	updateHR()
@@ -11,10 +14,7 @@ func updateHR():
 	var csv_array = []
 	var csv_file = File.new();
 	
-	
 	csv_file.open("C:/Users/hajna/HeartRateLogs/heartrateCSV.csv", csv_file.READ)
-	#csv_file.open("res://heartrateCSV.csv", csv_file.READ)
-	
 	
 	while not csv_file.eof_reached():
 		var csv_row = []
@@ -28,10 +28,10 @@ func updateHR():
 	# (Assuming there is something at that position)
 	#print ("Example value at X=3 Y=2 : ", csv_array[3][2]);
 	# To get the size of the data (assuming every row has the same size), you just do this:
-	var csv_size_column = csv_array.size();
-	var csv_size_row = csv_array[0].size();
+	var csv_size_column = csv_array.size();		# number of rows
+	var csv_size_row = csv_array[0].size();		#number of columns
 	var csv_lastRow = csv_size_column-2;
 	
+	currentHR = str(csv_array[csv_lastRow][2])
 	
-	
-	$Label.text = str(csv_array[csv_lastRow][2])
+	$Label.text = currentHR
