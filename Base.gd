@@ -12,8 +12,8 @@ func updateHR():
 	var csv_file = File.new();
 	
 	
-	#csv_file.open("C:\Users\hajna\heartrateCSV.csv", csv_file.READ)
-	csv_file.open("res://heartrateCSV.csv", csv_file.READ)
+	csv_file.open("C:/Users/hajna/HeartRateLogs/heartrateCSV.csv", csv_file.READ)
+	#csv_file.open("res://heartrateCSV.csv", csv_file.READ)
 	
 	
 	while not csv_file.eof_reached():
@@ -30,8 +30,8 @@ func updateHR():
 	# To get the size of the data (assuming every row has the same size), you just do this:
 	var csv_size_column = csv_array.size();
 	var csv_size_row = csv_array[0].size();
+	var csv_lastRow = csv_size_column-2;
 	
 	
 	
-	
-	$Label.text = str(csv_array[10][2])
+	$Label.text = str(csv_array[csv_lastRow][2])
