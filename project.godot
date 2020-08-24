@@ -16,7 +16,18 @@ _global_script_class_icons={
 [application]
 
 config/name="HeartRateGodot"
+run/main_scene="res://Base.tscn"
 config/icon="res://icon.png"
+
+[importer_defaults]
+
+csv={
+
+}
+
+[locale]
+
+locale_filter=[ 0, [ "en" ] ]
 
 [rendering]
 
