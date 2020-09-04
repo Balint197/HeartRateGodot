@@ -10,12 +10,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-margin_left = 311.0
-margin_top = 154.0
-margin_right = 690.0
-margin_bottom = 334.0
+[node name="HR_label" type="Label" parent="."]
+margin_left = 117.337
+margin_top = 95.2662
+margin_right = 496.337
+margin_bottom = 275.266
 text = "Heart Rate comes here"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RR_label" type="Label" parent="."]
+margin_left = 120.512
+margin_top = 266.705
+margin_right = 499.512
+margin_bottom = 446.705
+text = "RR comes here"
 __meta__ = {
 "_edit_use_anchors_": false
 }
