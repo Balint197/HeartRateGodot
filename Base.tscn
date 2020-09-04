@@ -11,20 +11,20 @@ __meta__ = {
 }
 
 [node name="HR_label" type="Label" parent="."]
-margin_left = 117.337
-margin_top = 95.2662
-margin_right = 496.337
-margin_bottom = 275.266
+margin_left = 117.0
+margin_top = 95.0
+margin_right = 306.0
+margin_bottom = 150.0
 text = "Heart Rate comes here"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RR_label" type="Label" parent="."]
-margin_left = 120.512
-margin_top = 266.705
-margin_right = 499.512
-margin_bottom = 446.705
+margin_left = 121.0
+margin_top = 267.0
+margin_right = 339.0
+margin_bottom = 321.0
 text = "RR comes here"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -32,4 +32,19 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="RMSSD_button" type="Button" parent="."]
+margin_left = 525.0
+margin_top = 74.0
+margin_right = 929.0
+margin_bottom = 163.0
+text = "calculate RMSSD"
+
+[node name="RMSSD_label" type="Label" parent="."]
+margin_left = 532.0
+margin_top = 204.0
+margin_right = 693.0
+margin_bottom = 272.0
+text = "RMSSD"
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="button_down" from="RMSSD_button" to="." method="_on_Button_button_down"]
