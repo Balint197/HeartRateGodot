@@ -7,14 +7,21 @@ onready var usedRR_arr = []
 export var RR_use_amount = 5 # TODO only for RR currently, add to HR
 
 func _on_Timer_timeout():
-	updateHR() # from logfile
-	updateRR() # from IBI
+	updateHR() 	# from logfile 
+				# can also calculate custom HR from RR
+	updateRR() 	# from IBI file
 	
 	# https://en.wikipedia.org/wiki/Heart_rate_variability#Analysis
 	# https://imotions.com/blog/heart-rate-variability/
+	
 	RMSSD() # TODO detect trend? separate timer, run less often?
 	# SDNN() # add maybe?
+	
 	# frequency domain measurements -> measure of sympathetic nervous system activity
+	# frequencies [Hz]:  # TODO export?
+		# HF: 0.15 - 0.4
+		# LF: 0.04 - 0.15
+		# VLF: 0.0033 - 0.04
 
 func updateHR():
 	
