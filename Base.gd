@@ -88,12 +88,13 @@ func updateRR():
 	IBI_file.close()
 
 func HR():
-	currentHR = 0
+	currentHR = 0.0
 	for RR in usedRR_arr:
 		currentHR += int(RR)
-	currentHR = currentHR / RR_use_amount * 60 / 1000
+	currentHR = 60 / (currentHR / RR_use_amount) * 1000
+	print(str(currentHR))
 	
-	$HR_label.text = str(currentHR)
+	$HR_label.text = str(int(currentHR))
 
 func RMSSD():
 	var RMSSD = 0
