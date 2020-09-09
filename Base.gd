@@ -6,11 +6,10 @@ onready var RR_array = []
 onready var usedRR_arr = []
 
 onready var latest_file
+onready var filePos = 0
 
-export (int, 9999) var RR_use_amount = 5
-
+export (int, 1, 9999) var RR_use_amount = 5
 export (String) var folder_location = "C:/Users/hajna/HeartRateLogs"
-
 
 func _ready():
 	initFile(folder_location)
@@ -67,26 +66,26 @@ func initFile(path):
 
 func updateRR():
 
-	# TODO get_modified_time -> use the latest reading, timestamp
 	var IBI_file = File.new()
 	IBI_file.open(folder_location.plus_file(latest_file), IBI_file.READ)
-	
-	# TODO save byte position of last read, only read data after that
+	IBI_file.seek(filePos)
+
 	while not IBI_file.eof_reached():
 		var IBI_line = IBI_file.get_line()
 		if IBI_line != "":	# needed for last line (\n in HeartRate program)
 			RR_array.append(IBI_line)
-	
-	# TODO data filtering?
-	
-	var IBI_size = RR_array.size()
-	var IBI_lastRow = IBI_size-1 # last IBI value in file
 
-	usedRR_arr = RR_array.slice(IBI_size-RR_use_amount, IBI_size) # takes last N values of IBI file
+	filePos = IBI_file.get_position()
+
+	var IBI_size = RR_array.size()
+
+	usedRR_arr = RR_array.slice(IBI_size - RR_use_amount, IBI_size) # takes last "RR_use_amount" values of IBI file
+
 	print_debug(usedRR_arr)
 
-	currentRR = str(RR_array[IBI_lastRow])
+	currentRR = str(RR_array[IBI_size - 1])
 	$RR_label.text = currentRR
+	IBI_file.close()
 
 func HR():
 	currentHR = 0
