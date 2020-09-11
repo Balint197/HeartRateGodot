@@ -9,6 +9,10 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+RR_use_amount = 18
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
 
 [node name="HR_label" type="Label" parent="."]
 margin_left = 117.0
@@ -30,21 +34,68 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timer" type="Timer" parent="."]
-autostart = true
-
-[node name="RMSSD_button" type="Button" parent="."]
+[node name="test_button" type="Button" parent="."]
 margin_left = 525.0
 margin_top = 74.0
 margin_right = 929.0
 margin_bottom = 163.0
-text = "calculate RMSSD"
+text = "press to test value"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="RMSSD_label" type="Label" parent="."]
-margin_left = 532.0
-margin_top = 204.0
-margin_right = 693.0
-margin_bottom = 272.0
+[node name="analysis_container" type="VBoxContainer" parent="."]
+margin_left = 535.453
+margin_top = 196.982
+margin_right = 840.453
+margin_bottom = 373.982
+custom_constants/separation = 12
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RMSSD_label" type="Label" parent="analysis_container"]
+margin_right = 305.0
+margin_bottom = 14.0
 text = "RMSSD"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SDNN_label" type="Label" parent="analysis_container"]
+margin_top = 26.0
+margin_right = 305.0
+margin_bottom = 40.0
+text = "SDNN"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PNN50_label" type="Label" parent="analysis_container"]
+margin_top = 52.0
+margin_right = 305.0
+margin_bottom = 66.0
+text = "PNN50"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PNN20_label" type="Label" parent="analysis_container"]
+margin_top = 78.0
+margin_right = 305.0
+margin_bottom = 92.0
+text = "PNN20"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SI_label" type="Label" parent="analysis_container"]
+margin_top = 104.0
+margin_right = 305.0
+margin_bottom = 118.0
+text = "SI"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="button_down" from="RMSSD_button" to="." method="_on_Button_button_down"]
+[connection signal="button_down" from="test_button" to="." method="_on_Button_button_down"]
