@@ -9,7 +9,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-RR_use_amount = 18
+RR_use_amount = 2702
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

@@ -41,7 +41,8 @@ func _on_Timer_timeout():
 	$analysis_container/PNN50_label.text = ("pNN50: " + str(pNN50))
 	pNN20 = pNNX_func(20)
 	$analysis_container/PNN20_label.text = ("pNN20: " + str(pNN20))
-	SI = SI_func()# Baevsky’s stress index
+	SI = SI_func()# Baevsky’s stress index @TODO!!! - nem ua. mint Kubios
+		# non-sqrt: small load: 1.5x-2x increase, big: 5-10x
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
 	
 	### FREQUENCY domain ### -> measure of sympathetic nervous system activity
@@ -149,40 +150,35 @@ func SDNN_func():
 func SI_func():
 	var SI_calc = 0 # Stress Index
 	var AMo = 0		# amplitude of the modal value
-	var Mo = 0 		# RR median
-	var MxDMn = usedRR_arr.max() - usedRR_arr.min() # variability width
-	# var nAmo = 0 	# biggest number of RR values in range
-	
+	var Mo = 0 		# RR median -> should be mode in original paper?
+	var MxDMn = (float(usedRR_arr.max()) - float(usedRR_arr.min())) # variability width
+
 	var RR_array_sorted = usedRR_arr
 	RR_array_sorted.sort()
-	
-	if RR_use_amount % 2 != 0: 					# odd RR_use_amount
-		Mo = RR_array_sorted[RR_use_amount/2]
-	else:										# even RR_use_amount -> mean
-		Mo = (RR_array_sorted[RR_use_amount/2] + RR_array_sorted[(RR_use_amount/2)-1]) / 2
+
+	if RR_use_amount % 2 != 0: 			# odd RR_use_amount
+		Mo = float(RR_array_sorted[RR_use_amount/2])
+	else:								# even RR_use_amount -> mean
+		Mo = (float(RR_array_sorted[RR_use_amount/2]) + float(RR_array_sorted[(RR_use_amount/2)-1])) / 2
 
 	var SI_array = []
-	var SI_array_index = 0
+	var SI_array_index = -1
 	var steppedValue = 0
 	var prevValue = 0
 
 	for i in range (RR_use_amount):
-		 
 		steppedValue = stepify(RR_array_sorted[i], 50) # ...or using format strings
-		print(steppedValue)
-		
+
 		if steppedValue != prevValue: 	# start new element in array
 			SI_array.append(int(0))
+			SI_array_index += 1
 
-		SI_array[SI_array_index] += 1 # increment current array
+		SI_array[SI_array_index] += 1 # increment array
 		prevValue = steppedValue
-	
-	AMo = SI_array.max()
-	print(AMo)
-	
-	AMo = AMo / RR_use_amount
-	
-	SI_calc = AMo / (2 * Mo * MxDMn)
+
+	AMo = float(100 * SI_array.max()) / float(RR_use_amount)
+
+	SI_calc = sqrt(float(AMo) / float(2 * Mo) * MxDMn)
 # Stress index (SI) = AMo / 2Mo x MxDMn. Where AMo is the amplitude of the modal
 # value and represents the percentage in comparison to all other RR intervals. 
 # Mo (in the formula 2Mo) is the modal value for the duration of a RR interval 
