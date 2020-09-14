@@ -1,56 +1,59 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Base.gd" type="Script" id=1]
+[ext_resource path="res://addons/easy_charts/LineChart/LineChart.tscn" type="PackedScene" id=2]
 
 [node name="Base" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
-RR_use_amount = 2702
+RR_use_amount = 10
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
 
 [node name="HR_label" type="Label" parent="."]
-margin_left = 117.0
-margin_top = 95.0
-margin_right = 306.0
-margin_bottom = 150.0
+margin_left = 49.1178
+margin_top = 29.9462
+margin_right = 228.118
+margin_bottom = 64.9462
 text = "Heart Rate comes here"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RR_label" type="Label" parent="."]
-margin_left = 121.0
-margin_top = 267.0
-margin_right = 339.0
-margin_bottom = 321.0
+margin_left = 43.0
+margin_top = 70.0
+margin_right = 261.0
+margin_bottom = 104.0
 text = "RR comes here"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="test_button" type="Button" parent="."]
-margin_left = 525.0
-margin_top = 74.0
-margin_right = 929.0
-margin_bottom = 163.0
+margin_left = 604.196
+margin_top = 13.1888
+margin_right = 1008.2
+margin_bottom = 102.189
 text = "press to test value"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="analysis_container" type="VBoxContainer" parent="."]
-margin_left = 535.453
-margin_top = 196.982
-margin_right = 840.453
-margin_bottom = 373.982
+margin_left = 264.039
+margin_top = 18.9643
+margin_right = 569.039
+margin_bottom = 195.964
 custom_constants/separation = 12
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -97,5 +100,19 @@ text = "SI"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="LineChart" parent="." instance=ExtResource( 2 )]
+margin_left = 72.1118
+margin_top = 191.335
+margin_right = -100.888
+margin_bottom = -47.6646
+source = "res://GodotOut.csv"
+Chart_Properties/are_values_columns = true
+Chart_Style/function_colors = PoolColorArray( 0.968627, 0.666667, 0.160784, 1, 0.956863, 0.223529, 0.290196, 1, 0.352941, 0.419608, 0.482353, 1, 0.560784, 0.74902, 0.34902, 1, 0.313726, 0.270588, 0.219608, 1, 0.717647, 0.662745, 0.603922, 1, 0, 0.843137, 0.584314, 1, 1, 0.92549, 0.8, 1, 1, 0.537255, 0.505882, 1 )
+Chart_Style/box_color = Color( 0, 0, 0, 0 )
+Chart_Style/v_lines_color = Color( 0, 0, 0, 0 )
+Chart_Style/h_lines_color = Color( 1, 1, 1, 0.235294 )
+Chart_Style/font_color = Color( 1, 1, 1, 0.235294 )
+Chart_Style/template = 1
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="button_down" from="test_button" to="." method="_on_Button_button_down"]

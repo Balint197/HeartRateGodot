@@ -8,9 +8,32 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "Control",
+"class": "Chart",
+"language": "GDScript",
+"path": "res://addons/easy_charts/Utilities/Scripts/Chart.gd"
+}, {
+"base": "Node2D",
+"class": "Chart2D",
+"language": "GDScript",
+"path": "res://addons/easy_charts/Utilities/Scripts/Chart2D.gd"
+}, {
+"base": "Control",
+"class": "Point",
+"language": "GDScript",
+"path": "res://addons/easy_charts/Utilities/Point/Point.gd"
+}, {
+"base": "PanelContainer",
+"class": "PointData",
+"language": "GDScript",
+"path": "res://addons/easy_charts/Utilities/Point/PointData.gd"
+} ]
 _global_script_class_icons={
-
+"Chart": "",
+"Chart2D": "",
+"Point": "",
+"PointData": ""
 }
 
 [application]
@@ -18,6 +41,14 @@ _global_script_class_icons={
 config/name="HeartRateGodot"
 run/main_scene="res://Base.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Utilities="*res://addons/easy_charts/Utilities/Scripts/utilities.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "easy_charts" )
 
 [importer_defaults]
 
