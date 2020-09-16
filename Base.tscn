@@ -12,6 +12,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 RR_use_amount = 10
+folder_location = null
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
@@ -114,5 +115,18 @@ Chart_Style/v_lines_color = Color( 0, 0, 0, 0 )
 Chart_Style/h_lines_color = Color( 1, 1, 1, 0.235294 )
 Chart_Style/font_color = Color( 1, 1, 1, 0.235294 )
 Chart_Style/template = 1
+
+[node name="LineChart2" parent="." instance=ExtResource( 2 )]
+margin_left = 379.389
+margin_top = 277.795
+margin_right = -23.6115
+margin_bottom = -19.205
+source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
+Chart_Properties/are_values_columns = true
+Chart_Style/function_colors = PoolColorArray( 0.117647, 0.117647, 0.117647, 1, 0.117647, 0.117647, 0.117647, 1, 0.117647, 0.117647, 0.117647, 1, 0.117647, 0.117647, 0.117647, 1 )
+Chart_Style/box_color = Color( 0.117647, 0.117647, 0.117647, 1 )
+Chart_Style/v_lines_color = Color( 0.792157, 0.792157, 0.792157, 1 )
+Chart_Style/h_lines_color = Color( 0.792157, 0.792157, 0.792157, 1 )
+Chart_Style/font_color = Color( 0.117647, 0.117647, 0.117647, 1 )
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="button_down" from="test_button" to="." method="_on_Button_button_down"]
+[connection signal="button_down" from="test_button" to="." method="_on_test_button_button_down"]

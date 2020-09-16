@@ -1,5 +1,7 @@
 extends Control
 
+export (int, 1, 9999) var RR_use_amount = 5 # TODO? -> = 0: all used
+
 onready var currentRR = 0
 onready var RR_average = 0
 onready var HR = 0
@@ -16,15 +18,32 @@ onready var results_arr = []
 onready var latest_file
 onready var filePos = 0
 
-export (int, 1, 9999) var RR_use_amount = 5 # TODO? -> = 0: all used
+onready var time = str(OS.get_datetime().year) + ". " + str(OS.get_datetime().month) \
+	+ ". " + str(OS.get_datetime().day) + ". " + str(OS.get_datetime().hour) \
+	+ "-"  + str(OS.get_datetime().minute) + "-" + str(OS.get_datetime().second)
+
+onready var results_file = File.new()
+onready var results_filename = "HeartRateAnalysisLog_" + time + ".csv"
+
 export (String) var folder_location = "C:/Users/hajna/HeartRateLogs"
 
 func _ready():
 	initFile(folder_location)
-	drawCharts()
 	
+	# add first row to CSV
 	var titleRow = ["Data_number","HR","RMMSD","SDNN","pNN50","pNN20","SI"]
 	results_arr.append(titleRow)
+	results_file.open(folder_location.plus_file(results_filename), results_file.WRITE)
+	results_file.store_csv_line(results_arr[0],";")
+	results_file.close()
+
+	#$LineChart.source = folder_location.plus_file(results_filename)
+	#$LineChart2.source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
+	
+#	$LineChart.plot()
+	#$LineChart2.plot()
+	
+	# print("Folder location: " + folder_location.plus_file(results_filename))
 
 func _on_Timer_timeout():
 	updateRR() 	# from IBI file (logfile unused)
@@ -55,14 +74,16 @@ func _on_Timer_timeout():
 		# LF: 0.04 - 0.15
 		# VLF: 0 - 0.04
 
-	# TODO detect trends, graph, separate timer, run less often?
 
-	# writing results to array and CSV (for plotting)
+	# TODO detect trends, graph, separate timer, run less often?
+	
+	
+	# writing results to array
 	results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
 	
+	logResults()
+	#drawCharts()
 
-func _on_Button_button_down():
-	pass
 
 func initFile(path):
 	var latest_date = 0
@@ -193,4 +214,45 @@ func SI_func():
 	return SI_calc
 
 func drawCharts():
-	$LineChart.plot()
+	# TODO read last N values from CSV, or based on time
+	$test_button.text = "okbuddy"
+	#$LineChart2.source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
+	$LineChart2.plot()
+	$test_button.text = "retard"
+
+func logResults():	# CSV (for plotting and review)
+	# TODO track time in 1st field based on RR?
+	
+	results_file.open(folder_location.plus_file(results_filename), results_file.READ_WRITE)
+	results_file.seek_end()
+	results_file.store_csv_line(results_arr[results_arr.size()-1],";")
+	results_file.close()
+
+
+func _on_test_button_button_down():
+	#drawCharts()
+	fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
+
+func fft(x):
+	
+	var N = x.size()
+	if N >= 1: return x
+	var even = fft(x[0%2])
+	var odd  = fft(x[1%2])
+	T = [exp(-2j*PI*k/N) * odd[k] for k in range(N//2)]
+
+
+#def fft(x):
+#
+#    N = len(x)
+#    if N <= 1: return x
+#    even = fft(x[0::2])
+#    odd =  fft(x[1::2])
+#    T= [exp(-2j*pi*k/N)*odd[k] for k in range(N//2)]
+#    return [even[k] + T[k] for k in range(N//2)] + \
+#           [even[k] - T[k] for k in range(N//2)]
+#
+#print( ' '.join("%5.3f" % abs(f) 
+#                for f in fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])) )
+				
+	pass
