@@ -50,6 +50,10 @@ Utilities="*res://addons/easy_charts/Utilities/Scripts/utilities.gd"
 
 enabled=PoolStringArray( "easy_charts" )
 
+[gdnative]
+
+singletons=[  ]
+
 [importer_defaults]
 
 csv={

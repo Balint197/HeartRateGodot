@@ -1,6 +1,46 @@
 extends Control
 
-export (int, 1, 9999) var RR_use_amount = 5 # TODO? -> = 0: all used
+# export (int, 1, 9999) var RR_use_amount = 10 # using RR_use_time instead
+onready var RR_use_amount = 0
+export (int, 1, 9999) var RR_use_time = 5000 # TODO? -> = 0: all used
+
+# !!! modify values here, export is broken (gives null sometimes)
+export (Dictionary) var RMSSD_borders = {
+	RMSSD_verylow = 0,
+	RMSSD_low     = 50,
+	RMSSD_mid     = 100,
+	RMSSD_high    = 150
+}
+
+export (Dictionary) var SDNN_borders = {
+	SDNN_verylow = 0,
+	SDNN_low     = 10,
+	SDNN_mid     = 20,
+	SDNN_high    = 30
+}
+
+export (Dictionary) var PNN50_borders = {
+	pNN50_verylow = 0,
+	pNN50_low     = 10,
+	pNN50_mid     = 20,
+	pNN50_high    = 30
+}
+
+export (Dictionary) var PNN20_borders = {
+	pNN20_verylow = 0,
+	pNN20_low     = 10,
+	pNN20_mid     = 20,
+	pNN20_high    = 30
+}
+
+export (Dictionary) var SI_borders = {
+	SI_verylow = 0,
+	SI_low     = 10,
+	SI_mid     = 20,
+	SI_high    = 30
+}
+
+### INIT VARS ###
 
 onready var currentRR = 0
 onready var RR_average = 0
@@ -50,9 +90,7 @@ func _on_Timer_timeout():
 	$RR_label.text = ("Last RR: " + currentRR)
 	# https://en.wikipedia.org/wiki/Heart_rate_variability#Analysis
 	# https://imotions.com/blog/heart-rate-variability/
-	
-	# TODO uniform time instead of same number of RR values?
-	
+
 	### TIME domain ###
 	HR = HR_func() 
 	$HR_label.text = ("Heart rate: " + str(int(HR)))
@@ -69,7 +107,7 @@ func _on_Timer_timeout():
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
 	
 	### FREQUENCY domain ### -> measure of sympathetic nervous system activity
-	# frequencies [Hz]:  # TODO export?
+	# frequencies [Hz]:  # TODO FFT PythonScript (bug)
 		# HF: 0.15 - 0.4
 		# LF: 0.04 - 0.15
 		# VLF: 0 - 0.04
@@ -83,6 +121,12 @@ func _on_Timer_timeout():
 	
 	logResults()
 	#drawCharts()
+	
+	dataRating(RMSSD_borders, 250)
+	dataRating(SDNN_borders, 5)
+	dataRating(PNN50_borders, 5)
+	dataRating(PNN20_borders, 5)
+	dataRating(SI_borders, 5)
 
 
 func initFile(path):
@@ -124,6 +168,13 @@ func updateRR():
 	filePos = IBI_file.get_position()
 
 	var IBI_size = RR_arr.size()
+
+	RR_use_amount = 0
+
+	var last_RR_sum = 0
+	while last_RR_sum < RR_use_time && RR_use_amount < IBI_size:
+		last_RR_sum += RR_arr[IBI_size - 1 - RR_use_amount]
+		RR_use_amount += 1
 
 	RR_used_arr = RR_arr.slice(IBI_size - RR_use_amount, IBI_size) # takes last "RR_use_amount" values of IBI file
 
@@ -214,20 +265,17 @@ func SI_func():
 	return SI_calc
 
 func drawCharts():
-	# TODO read last N values from CSV, or based on time
-	$test_button.text = "okbuddy"
+	# TODO read last N values from CSV, or based on time -> easyCharts plot bug...
+
 	#$LineChart2.source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
 	$LineChart2.plot()
-	$test_button.text = "retard"
 
 func logResults():	# CSV (for plotting and review)
-	# TODO track time in 1st field based on RR?
 	
 	results_file.open(folder_location.plus_file(results_filename), results_file.READ_WRITE)
 	results_file.seek_end()
 	results_file.store_csv_line(results_arr[results_arr.size()-1],";")
 	results_file.close()
-
 
 func _on_test_button_button_down():
 	#drawCharts()
@@ -235,11 +283,11 @@ func _on_test_button_button_down():
 
 func fft(x):
 	
-	var N = x.size()
-	if N >= 1: return x
-	var even = fft(x[0%2])
-	var odd  = fft(x[1%2])
-	T = [exp(-2j*PI*k/N) * odd[k] for k in range(N//2)]
+#	var N = x.size()
+#	if N >= 1: return x
+#	var even = fft(x[0%2])
+#	var odd  = fft(x[1%2])
+#	T = [exp(-2j*PI*k/N) * odd[k] for k in range(N//2)]
 
 
 #def fft(x):
@@ -256,3 +304,19 @@ func fft(x):
 #                for f in fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])) )
 				
 	pass
+
+func dataRating(analysis_dictionary: Dictionary, data):
+	
+	var lastGood
+	var i = 0
+
+	for key in analysis_dictionary.keys():
+		if analysis_dictionary[key] < data:
+			lastGood = key
+			i += 1
+			if analysis_dictionary.size() == i:
+				print(lastGood)
+				return
+		else:
+			print(lastGood)
+			return
