@@ -2,7 +2,7 @@ extends Control
 
 # export (int, 1, 9999) var RR_use_amount = 10 # using RR_use_time instead
 onready var RR_use_amount = 0
-export (int, 1, 9999) var RR_use_time = 5000 # TODO? -> = 0: all used
+export (int, 1, 999999999999) var RR_use_time = 5000 # TODO? -> = 0: all used
 
 # !!! modify values here, export is broken (gives null sometimes)
 export (Dictionary) var RMSSD_borders = {
