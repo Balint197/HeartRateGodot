@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 31.3216
+
+[node name="obstacle" type="StaticBody2D" groups=[
+"obstacle",
+]]
+collision_layer = 2
+collision_mask = 13
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 5, 5 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 50, 155, 12, 13 )
