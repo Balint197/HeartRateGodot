@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://HeartRate/HeartRate.gd" type="Script" id=1]
+[ext_resource path="res://Base.gd" type="Script" id=1]
 [ext_resource path="res://addons/easy_charts/LineChart/LineChart.tscn" type="PackedScene" id=2]
 
-[node name="HeartRate" type="Control"]
+[node name="Base" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
