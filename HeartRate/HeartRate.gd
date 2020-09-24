@@ -2,7 +2,7 @@ extends Control
 
 # export (int, 1, 9999) var RR_use_amount = 10 # using RR_use_time instead
 onready var RR_use_amount = 0
-export (int, 1, 999999999999) var RR_use_time = 5000 # TODO? -> = 0: all used
+export (int, 1, 999999999) var RR_use_time = 30000 # TODO? -> = 0: all used
 
 # !!! modify values here, export is broken (gives null sometimes)
 export (Dictionary) var RMSSD_borders = {
@@ -228,15 +228,11 @@ func SDNN_func():
 func SI_func():
 	var Mo = 0 		# RR median -> should be mode in original paper?
 	var AMo = 0		# amplitude of the modal value
-	var MxDMn = (float(RR_used_arr.max()) - float(RR_used_arr.min())) # variability width
+	var MxDMn = (float(RR_used_arr.max()) - float(RR_used_arr.min()))/1000 # variability width
 
+	# sorting array
 	var RR_arr_sorted = RR_used_arr
 	RR_arr_sorted.sort()
-
-	if RR_use_amount % 2 != 0: 			# odd RR_use_amount
-		Mo = float(RR_arr_sorted[RR_use_amount/2])
-	else:								# even RR_use_amount -> mean
-		Mo = (float(RR_arr_sorted[RR_use_amount/2]) + float(RR_arr_sorted[(RR_use_amount/2)-1])) / 2
 
 	var SI_array = []
 	var SI_array_index = -1
@@ -244,24 +240,31 @@ func SI_func():
 	var prevValue = 0
 
 	for i in range (RR_use_amount):
-		steppedValue = stepify(RR_arr_sorted[i], 50) # ...or using format strings
+		steppedValue = stepify(RR_arr_sorted[i], 50) # round current value
 
 		if steppedValue != prevValue: 	# start new element in array
-			SI_array.append(int(0))
+			SI_array.append([0, steppedValue])
 			SI_array_index += 1
 
-		SI_array[SI_array_index] += 1 # increment array
+		SI_array[SI_array_index][0] += 1 # value belongs in current array
 		prevValue = steppedValue
 
-	AMo = float(100 * SI_array.max()) / float(RR_use_amount)
+	print(str(SI_array.max()[0]))
+	AMo = float(100 * SI_array.max()[0]) / float(RR_use_amount)
+	
+	
+	# Mo with mode 
+	Mo = float(SI_array.max()[1]) / 1000
 
-	var SI_calc = sqrt(float(AMo) / float(2 * Mo) * MxDMn)
-# Stress index (SI) = AMo / 2Mo x MxDMn. Where AMo is the amplitude of the modal
-# value and represents the percentage in comparison to all other RR intervals. 
-# Mo (in the formula 2Mo) is the modal value for the duration of a RR interval 
-# that has been measured the most often. MxDMn is the variability width, or in 
-# other words the difference between the maximum and minimum measured RR interval. 
-
+	# Mo with median (Kubios)
+#	if RR_use_amount % 2 != 0: 			# odd RR_use_amount
+#		Mo = float(RR_arr_sorted[RR_use_amount/2])
+#	else:								# even RR_use_amount -> mean
+#		Mo = (float(RR_arr_sorted[RR_use_amount/2]) + float(RR_arr_sorted[(RR_use_amount/2)-1])) / 2
+#	Mo = float(Mo/1000)
+	
+	var SI_calc = sqrt(float(AMo) / (float(2 * Mo) * MxDMn))
+	
 	return SI_calc
 
 func drawCharts():

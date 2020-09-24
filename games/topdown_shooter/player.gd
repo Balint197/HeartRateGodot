@@ -34,9 +34,9 @@ func _physics_process(_delta):
 		direction += Vector2(-1, 0)
 	if Input.is_action_pressed("ui_right"):
 		direction += Vector2(1, 0)
+	direction = direction.normalized()
 	
-	move_and_slide(direction * speed)
-
+	var movevector = move_and_slide(direction * speed)
 
 func _on_firetimer_timeout():
 	can_fire = true

@@ -35,8 +35,3 @@ z_index = -1
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 175.079, 112.917, 19.7526, 11.9197 )
-
-[node name="ai_Timer" type="Timer" parent="."]
-
-[node name="Navigation2D" type="Navigation2D" parent="."]
-[connection signal="timeout" from="ai_Timer" to="." method="_on_Timer_timeout"]
