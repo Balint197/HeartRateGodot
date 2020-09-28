@@ -57,6 +57,7 @@ onready var results_arr = []
 
 onready var latest_file
 onready var filePos = 0
+onready var IBI_size = 0
 
 onready var time = str(OS.get_datetime().year) + ". " + str(OS.get_datetime().month) \
 	+ ". " + str(OS.get_datetime().day) + ". " + str(OS.get_datetime().hour) \
@@ -105,7 +106,7 @@ func _on_Timer_timeout():
 	SI = SI_func()# Baevsky’s stress index @TODO!!! - nem ua. mint Kubios
 		# non-sqrt: small load: 1.5x-2x increase, big: 5-10x
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
-	
+
 	### FREQUENCY domain ### -> measure of sympathetic nervous system activity
 	# frequencies [Hz]:  # TODO FFT PythonScript (bug)
 		# HF: 0.15 - 0.4
@@ -114,14 +115,14 @@ func _on_Timer_timeout():
 
 
 	# TODO detect trends, graph, separate timer, run less often?
-	
-	
+
+
 	# writing results to array
 	results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
-	
+
 	logResults()
 	#drawCharts()
-	
+
 	dataRating(RMSSD_borders, 250)
 	dataRating(SDNN_borders, 5)
 	dataRating(PNN50_borders, 5)
@@ -156,21 +157,29 @@ func initFile(path):
 
 func updateRR():
 
+
 	var IBI_file = File.new()
-	IBI_file.open(folder_location.plus_file(latest_file), IBI_file.READ)
-	IBI_file.seek(filePos)
+	# testing if the file is being written by HeartRate program
+	if !IBI_file.file_exists(folder_location.plus_file("Reading.file")): 
 
-	while not IBI_file.eof_reached():
-		var IBI_line = IBI_file.get_line()
-		if IBI_line != "":	# needed for last line (\n in HeartRate program)
-			RR_arr.append(int(IBI_line))
+		var fileOpenError = IBI_file.open(folder_location.plus_file(latest_file), IBI_file.READ)
+		if fileOpenError != OK:
+			print("File open error: " + fileOpenError)
+		if fileOpenError == OK:
+			IBI_file.seek(filePos)
 
-	filePos = IBI_file.get_position()
+			while not IBI_file.eof_reached():
+				var IBI_line = IBI_file.get_line()
+				if IBI_line != "":	# needed for last line (\n in HeartRate program)
+					RR_arr.append(int(IBI_line))
 
-	var IBI_size = RR_arr.size()
+			filePos = IBI_file.get_position()
+
+			IBI_size = RR_arr.size()
+			IBI_file.close()
+
 
 	RR_use_amount = 0
-
 	var last_RR_sum = 0
 	while last_RR_sum < RR_use_time && RR_use_amount < IBI_size:
 		last_RR_sum += RR_arr[IBI_size - 1 - RR_use_amount]
@@ -178,7 +187,7 @@ func updateRR():
 
 	RR_used_arr = RR_arr.slice(IBI_size - RR_use_amount, IBI_size) # takes last "RR_use_amount" values of IBI file
 
-	print_debug(RR_used_arr)
+	#print_debug(RR_used_arr)
 
 	RR_average = 0
 	for i in range(RR_use_amount):
@@ -186,7 +195,6 @@ func updateRR():
 	RR_average = RR_average / RR_use_amount
 
 	currentRR = str(RR_arr[IBI_size - 1])
-	IBI_file.close()
 
 func HR_func():
 	var HR_calc = 0.0
@@ -249,7 +257,6 @@ func SI_func():
 		SI_array[SI_array_index][0] += 1 # value belongs in current array
 		prevValue = steppedValue
 
-	print(str(SI_array.max()[0]))
 	AMo = float(100 * SI_array.max()[0]) / float(RR_use_amount)
 	
 	
@@ -293,8 +300,10 @@ func fft(x):
 #	T = [exp(-2j*PI*k/N) * odd[k] for k in range(N//2)]
 
 
-#def fft(x):
+# Python:
+#from cmath import exp, pi
 #
+#def fft(x):
 #    N = len(x)
 #    if N <= 1: return x
 #    even = fft(x[0::2])
@@ -305,7 +314,13 @@ func fft(x):
 #
 #print( ' '.join("%5.3f" % abs(f) 
 #                for f in fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])) )
-				
+#
+#
+#
+#4.000 2.613 0.000 1.082 0.000 1.082 0.000 2.613
+
+
+
 	pass
 
 func dataRating(analysis_dictionary: Dictionary, data):
@@ -318,8 +333,8 @@ func dataRating(analysis_dictionary: Dictionary, data):
 			lastGood = key
 			i += 1
 			if analysis_dictionary.size() == i:
-				print(lastGood)
+				#print(lastGood)
 				return
 		else:
-			print(lastGood)
+			#print(lastGood)
 			return
