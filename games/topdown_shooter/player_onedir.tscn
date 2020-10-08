@@ -1,14 +1,13 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://games/topdown_shooter/player.gd" type="Script" id=1]
+[ext_resource path="res://games/topdown_shooter/player_onedir.gd" type="Script" id=1]
 [ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 
-[node name="player" type="KinematicBody2D"]
+[node name="player_onedir" type="KinematicBody2D"]
 collision_mask = 7
 script = ExtResource( 1 )
-bulletspray = 80
 
 [node name="player_collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -29,5 +28,6 @@ region_rect = Rect2( 0, 132, 30, 9 )
 [node name="firetimer" type="Timer" parent="."]
 
 [node name="Muzzle" type="Position2D" parent="."]
+position = Vector2( 29.9661, 7.11694 )
 [connection signal="input_event" from="." to="." method="_on_player_input_event"]
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]

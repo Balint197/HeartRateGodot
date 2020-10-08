@@ -48,7 +48,7 @@ Utilities="*res://addons/easy_charts/Utilities/Scripts/utilities.gd"
 
 [display]
 
-window/size/width=1300
+window/size/width=1280
 window/size/height=800
 
 [editor_plugins]
