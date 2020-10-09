@@ -1,5 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://games/topdown_shooter/level_side_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://games/topdown_shooter/obstacle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://games/topdown_shooter/TileMap.tscn" type="PackedScene" id=3]
 [ext_resource path="res://games/topdown_shooter/camera_shake.gd" type="Script" id=4]
@@ -26,6 +27,7 @@ autostart = true
 [node name="player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 134.03, 602.191 )
 fire_rate = 0.5
+bulletspray = 10
 
 [node name="obstacles" type="Node" parent="."]
 
@@ -53,8 +55,121 @@ position = Vector2( 411.529, 449.284 )
 [node name="spawnTimer" type="Timer" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 671.751, 415.779 )
+position = Vector2( 640, 400 )
 current = true
 script = ExtResource( 4 )
+
+[node name="level_side" type="Node" parent="."]
+
+[node name="level_side_block" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -63.4961, 68.2582 )
+
+[node name="level_side_block2" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -66.6709, 190.488 )
+
+[node name="level_side_block3" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -65.0835, 311.131 )
+
+[node name="level_side_block4" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -66.6709, 438.123 )
+
+[node name="level_side_block5" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -66.2583, 562.115 )
+
+[node name="level_side_block6" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -69.4331, 684.345 )
+
+[node name="level_side_block7" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -65.8457, 807.987 )
+
+[node name="level_side_block20" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1404.92, 38.5933 )
+
+[node name="level_side_block21" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1401.74, 160.823 )
+
+[node name="level_side_block22" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1403.33, 281.466 )
+
+[node name="level_side_block23" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1401.74, 408.458 )
+
+[node name="level_side_block24" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1402.16, 532.45 )
+
+[node name="level_side_block25" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1398.98, 654.68 )
+
+[node name="level_side_block26" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1402.57, 778.322 )
+
+[node name="level_side_block8" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 56.5669, 892.979 )
+
+[node name="level_side_block9" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 183.567, 895.979 )
+
+[node name="level_side_block10" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 310.567, 891.979 )
+
+[node name="level_side_block11" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 437.567, 894.979 )
+
+[node name="level_side_block12" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 565.567, 891.979 )
+
+[node name="level_side_block13" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 692.567, 894.979 )
+
+[node name="level_side_block14" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 946.567, 893.979 )
+
+[node name="level_side_block15" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 818.422, 897.984 )
+
+[node name="level_side_block16" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1073.38, 893.761 )
+
+[node name="level_side_block17" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1200.38, 896.761 )
+
+[node name="level_side_block19" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1326.23, 899.766 )
+
+[node name="level_side_block27" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( -64.2119, -56.2998 )
+
+[node name="level_side_block28" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 62.7881, -53.2998 )
+
+[node name="level_side_block29" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 189.788, -57.2998 )
+
+[node name="level_side_block30" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 316.788, -54.2998 )
+
+[node name="level_side_block31" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 444.788, -57.2998 )
+
+[node name="level_side_block32" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 571.788, -54.2998 )
+
+[node name="level_side_block33" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 825.788, -55.2998 )
+
+[node name="level_side_block34" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 697.644, -51.2953 )
+
+[node name="level_side_block35" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 952.6, -55.5181 )
+
+[node name="level_side_block36" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1079.6, -52.5181 )
+
+[node name="level_side_block37" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1333.6, -53.5181 )
+
+[node name="level_side_block38" parent="level_side" instance=ExtResource( 1 )]
+position = Vector2( 1205.46, -49.5134 )
 [connection signal="timeout" from="Navigation2D/ai_Timer" to="." method="_on_ai_Timer_timeout"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]

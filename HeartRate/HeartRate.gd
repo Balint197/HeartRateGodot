@@ -103,12 +103,11 @@ func _on_Timer_timeout():
 	$analysis_container/PNN50_label.text = ("pNN50: " + str(pNN50))
 	pNN20 = pNNX_func(20)
 	$analysis_container/PNN20_label.text = ("pNN20: " + str(pNN20))
-	SI = SI_func()# Baevsky’s stress index @TODO!!! - nem ua. mint Kubios
-		# non-sqrt: small load: 1.5x-2x increase, big: 5-10x
+	SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
 
 	### FREQUENCY domain ### -> measure of sympathetic nervous system activity
-	# frequencies [Hz]:  # TODO FFT PythonScript (bug)
+	# frequencies [Hz]:  # TODO? FFT PythonScript (bug)
 		# HF: 0.15 - 0.4
 		# LF: 0.04 - 0.15
 		# VLF: 0 - 0.04

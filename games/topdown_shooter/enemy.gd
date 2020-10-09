@@ -4,7 +4,7 @@ export var speed = 200
 
 onready var player = get_tree().get_root().get_node("topdown_shooter").get_node("player")
 
-var sprite_dead = preload("res://sprites/corpse.png")
+onready var corpse = preload("res://games/topdown_shooter/corpse.tscn")
 
 var path: = PoolVector2Array() setget set_path
 
@@ -26,7 +26,7 @@ func move_along_path(distance: float):
 		if distance <= distance_to_next and distance >= 0.0:
 #			position = start_point.linear_interpolate(path[0], distance / distance_to_next) 
 			var idealposition = start_point.linear_interpolate(path[0], distance / distance_to_next) 
-			var collided = move_and_slide((idealposition - get_global_position()) * 50)
+			var _collided = move_and_slide((idealposition - get_global_position()) * 50)
 			break
 		elif distance < 0.0:
 			position = path[0]
@@ -44,5 +44,7 @@ func set_path(value : PoolVector2Array):
 
 func hit():
 	print("dead")
-	$spr_enemy.texture = sprite_dead
-	set_process(false)
+	var corpse_instance = corpse.instance()
+	corpse_instance.position = get_global_position()
+	get_tree().get_root().add_child(corpse_instance)
+	queue_free()

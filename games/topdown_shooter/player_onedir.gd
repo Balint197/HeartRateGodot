@@ -34,16 +34,14 @@ func get_input():
 
 func shoot():
 	var bullet = Bullet.instance()
-	bullet.start($Muzzle.global_position, rotation, bullet_speed)
-#	bullet.position = get_global_position()
-#	bullet.rotation_degrees = rotation_degrees
-#	bullet.apply_impulse(Vector2(), Vector2(bullet_speed, rand_range(-bulletspray,bulletspray)).rotated(rotation))
+	bullet.start($Muzzle.global_position, rotation, bullet_speed, bulletspray)
 	get_tree().get_root().add_child(bullet)
 	can_fire = false
 	firetimer.start()
 	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 5)
+	$Muzzle/flash.emitting = true
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	get_input()
 	var dir = get_global_mouse_position() - global_position
 	if dir.length() > 5:

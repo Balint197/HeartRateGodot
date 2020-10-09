@@ -14,3 +14,7 @@ func _on_bullet_body_entered(body):
 		get_tree().get_root().add_child(explosion_instance)
 		queue_free()
 		body.die()
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	queue_free()
