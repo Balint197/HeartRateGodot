@@ -13,20 +13,20 @@ func _ready():
 
 func _process(delta):
 	var move_distance = speed * delta
-	move_along_path(move_distance)
+	move_along_path(move_distance, delta)
 	if path.size() != 0:
 		look_at(path[0])
 	else: 
 		pass#print("GG")
 
-func move_along_path(distance: float):
+func move_along_path(distance: float, delta: float):
 	var start_point = position
 	for _i in range(path.size()):
 		var distance_to_next = start_point.distance_to(path[0])
 		if distance <= distance_to_next and distance >= 0.0:
 #			position = start_point.linear_interpolate(path[0], distance / distance_to_next) 
 			var idealposition = start_point.linear_interpolate(path[0], distance / distance_to_next) 
-			var _collided = move_and_slide((idealposition - get_global_position()) * 50)
+			var _collided = move_and_slide((idealposition - get_global_position()) * 1000 * delta)
 			break
 		elif distance < 0.0:
 			position = path[0]

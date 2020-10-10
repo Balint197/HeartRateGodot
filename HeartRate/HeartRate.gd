@@ -106,15 +106,7 @@ func _on_Timer_timeout():
 	SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
 
-	### FREQUENCY domain ### -> measure of sympathetic nervous system activity
-	# frequencies [Hz]:  # TODO? FFT PythonScript (bug)
-		# HF: 0.15 - 0.4
-		# LF: 0.04 - 0.15
-		# VLF: 0 - 0.04
-
-
 	# TODO detect trends, graph, separate timer, run less often?
-
 
 	# writing results to array
 	results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
@@ -288,38 +280,6 @@ func logResults():	# CSV (for plotting and review)
 
 func _on_test_button_button_down():
 	#drawCharts()
-	fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])
-
-func fft(x):
-	
-#	var N = x.size()
-#	if N >= 1: return x
-#	var even = fft(x[0%2])
-#	var odd  = fft(x[1%2])
-#	T = [exp(-2j*PI*k/N) * odd[k] for k in range(N//2)]
-
-
-# Python:
-#from cmath import exp, pi
-#
-#def fft(x):
-#    N = len(x)
-#    if N <= 1: return x
-#    even = fft(x[0::2])
-#    odd =  fft(x[1::2])
-#    T= [exp(-2j*pi*k/N)*odd[k] for k in range(N//2)]
-#    return [even[k] + T[k] for k in range(N//2)] + \
-#           [even[k] - T[k] for k in range(N//2)]
-#
-#print( ' '.join("%5.3f" % abs(f) 
-#                for f in fft([1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0])) )
-#
-#
-#
-#4.000 2.613 0.000 1.082 0.000 1.082 0.000 2.613
-
-
-
 	pass
 
 func dataRating(analysis_dictionary: Dictionary, data):

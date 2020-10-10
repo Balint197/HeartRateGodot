@@ -14,6 +14,7 @@ onready var firetimer = $firetimer
 
 func _ready():
 	firetimer.wait_time = fire_rate 
+	$Muzzle/bulletcase.amount = float(60/fire_rate)
 
 func _process(_delta):
 	look_at(get_global_mouse_position())
@@ -40,7 +41,8 @@ func shoot():
 	firetimer.start()
 	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 5)
 	$Muzzle/flash.emitting = true
-
+	$Muzzle/bulletcase.emitting = true
+	
 func _physics_process(_delta):
 	get_input()
 	var dir = get_global_mouse_position() - global_position
@@ -51,4 +53,5 @@ func _physics_process(_delta):
 
 func _on_firetimer_timeout():
 	can_fire = true
+	$Muzzle/bulletcase.emitting = false
 	

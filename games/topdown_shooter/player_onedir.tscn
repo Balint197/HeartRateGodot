@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://games/topdown_shooter/player_onedir.gd" type="Script" id=1]
-[ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=2]
+[ext_resource path="res://games/sprites/sheet_charactersEquipment.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 
@@ -28,15 +28,29 @@ scale_random = 0.35
 color_ramp = SubResource( 3 )
 hue_variation = 0.02
 
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.390909 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
+
+[sub_resource type="ParticlesMaterial" id=7]
 flag_disable_z = true
-gravity = Vector3( 0, 98, 0 )
+direction = Vector3( 0, 1, 0 )
+spread = 10.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 100.0
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
+damping = 100.0
+scale = 5.0
+scale_curve = SubResource( 6 )
+color = Color( 0.890196, 0.811765, 0.176471, 1 )
 
 [node name="player_onedir" type="KinematicBody2D"]
 collision_mask = 2147483671
 script = ExtResource( 1 )
+fire_rate = 0.5
 
 [node name="player_collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -69,7 +83,12 @@ local_coords = false
 process_material = SubResource( 4 )
 
 [node name="bulletcase" type="Particles2D" parent="Muzzle"]
-position = Vector2( 0.33371, 0 )
-process_material = SubResource( 5 )
+position = Vector2( -10, 0 )
+z_index = -3
+emitting = false
+amount = 60
+lifetime = 60.0
+local_coords = false
+process_material = SubResource( 7 )
 [connection signal="input_event" from="." to="." method="_on_player_input_event"]
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]
