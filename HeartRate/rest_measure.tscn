@@ -12,6 +12,9 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
+RR_use_time = 60000
+folder_location = "C:/HeartRateLogs"
+save_file_name = "RestHeartRateAnalysisLog_"
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 0.5
