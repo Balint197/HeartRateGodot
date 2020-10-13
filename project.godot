@@ -44,6 +44,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+Globals="*res://Globals.gd"
 Utilities="*res://addons/easy_charts/Utilities/Scripts/utilities.gd"
 
 [display]

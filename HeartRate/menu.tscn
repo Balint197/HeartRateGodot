@@ -1,0 +1,154 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://HeartRate/menu.gd" type="Script" id=1]
+
+[node name="menu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="titleLabel" type="Label" parent="."]
+margin_left = 443.836
+margin_top = 83.1935
+margin_right = 797.836
+margin_bottom = 175.194
+text = "Csináld sorrendben a következö vizsgálatokat:
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemList" type="GridContainer" parent="."]
+margin_left = 374.827
+margin_top = 279.949
+margin_right = 817.827
+margin_bottom = 505.949
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="rest" type="Label" parent="ItemList"]
+margin_right = 205.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Nyugalmi mérés"
+
+[node name="restCheckButton" type="CheckBox" parent="ItemList"]
+margin_left = 209.0
+margin_right = 233.0
+margin_bottom = 24.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+disabled = true
+
+[node name="restButton" type="Button" parent="ItemList"]
+margin_left = 237.0
+margin_right = 442.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+disabled = true
+text = "start"
+
+[node name="task1" type="Label" parent="ItemList"]
+margin_top = 76.0
+margin_right = 205.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Feladat 1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="task1CheckButton" type="CheckBox" parent="ItemList"]
+margin_left = 209.0
+margin_top = 76.0
+margin_right = 233.0
+margin_bottom = 100.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+disabled = true
+
+[node name="task1Button" type="Button" parent="ItemList"]
+margin_left = 237.0
+margin_top = 76.0
+margin_right = 442.0
+margin_bottom = 96.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+disabled = true
+text = "start"
+
+[node name="task2" type="Label" parent="ItemList"]
+margin_top = 152.0
+margin_right = 205.0
+margin_bottom = 166.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+text = "Feladat 2"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="task2CheckButton" type="CheckBox" parent="ItemList"]
+margin_left = 209.0
+margin_top = 152.0
+margin_right = 233.0
+margin_bottom = 176.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+disabled = true
+
+[node name="task2Button" type="Button" parent="ItemList"]
+margin_left = 237.0
+margin_top = 152.0
+margin_right = 442.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 2
+disabled = true
+text = "start"
+
+[node name="testButton" type="Button" parent="."]
+margin_left = 111.907
+margin_top = 549.056
+margin_right = 235.907
+margin_bottom = 664.056
+
+[node name="endLabel" type="Label" parent="."]
+visible = false
+margin_left = 464.0
+margin_top = 548.0
+margin_right = 771.0
+margin_bottom = 606.0
+text = "A kísérletnek vége. 
+Köszönöm a részvételt!"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="endLabel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -78.5519
+margin_top = 102.408
+margin_right = 71.4481
+margin_bottom = 184.408
+disabled = true
+text = "Kilépés"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="ItemList/restButton" to="." method="_on_restButton_pressed"]
+[connection signal="pressed" from="ItemList/task1Button" to="." method="_on_task1Button_pressed"]
+[connection signal="pressed" from="ItemList/task2Button" to="." method="_on_task2Button_pressed"]
+[connection signal="pressed" from="testButton" to="." method="_on_testButton_pressed"]
+[connection signal="pressed" from="endLabel/Button" to="." method="_on_Button_pressed"]

@@ -14,7 +14,6 @@ __meta__ = {
 }
 RR_use_time = 60000
 folder_location = "C:/HeartRateLogs"
-save_file_name = "RestHeartRateAnalysisLog_"
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 0.5
@@ -70,7 +69,7 @@ margin_top = -76.0178
 margin_right = 297.5
 margin_bottom = -34.0178
 max_value = 60.0
-value = 55.0
+value = 58.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

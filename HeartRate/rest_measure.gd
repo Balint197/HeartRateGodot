@@ -32,4 +32,4 @@ func _on_Timer_timeout():
 		logResults()
 
 		$Timer.stop()
-		print("meres kesz")
+		get_tree().change_scene("res://HeartRate/menu.tscn")

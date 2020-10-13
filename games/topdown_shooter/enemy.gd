@@ -1,32 +1,36 @@
 extends KinematicBody2D
 
+signal hit_player
+
 export var speed = 200
 
+onready var control_node = get_tree().get_root().get_node("topdown_shooter")
 onready var player = get_tree().get_root().get_node("topdown_shooter").get_node("player")
-
 onready var corpse = preload("res://games/topdown_shooter/corpse.tscn")
 
 var path: = PoolVector2Array() setget set_path
 
 func _ready():
+	connect("hit_player", control_node, "_on_hit_player")
 	set_process(false)
 
-func _process(delta):
+func _physics_process(delta):
 	var move_distance = speed * delta
-	move_along_path(move_distance, delta)
+	move_along_path(move_distance)
 	if path.size() != 0:
 		look_at(path[0])
 	else: 
+		emit_signal("hit_player")
 		pass#print("GG")
 
-func move_along_path(distance: float, delta: float):
+func move_along_path(distance: float):
 	var start_point = position
 	for _i in range(path.size()):
 		var distance_to_next = start_point.distance_to(path[0])
 		if distance <= distance_to_next and distance >= 0.0:
 #			position = start_point.linear_interpolate(path[0], distance / distance_to_next) 
 			var idealposition = start_point.linear_interpolate(path[0], distance / distance_to_next) 
-			var _collided = move_and_slide((idealposition - get_global_position()) * 1000 * delta)
+			var _collided = move_and_slide((idealposition - get_global_position()) * 70)
 			break
 		elif distance < 0.0:
 			position = path[0]

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sheet_charactersEquipment.png-2744abbdc3a7426ea9061ebc0c284dab.stex"
+path="res://.import/explosion2.png-013a656a1fea18253a37449fbafda691.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://games/sprites/sheet_charactersEquipment.png"
-dest_files=[ "res://.import/sheet_charactersEquipment.png-2744abbdc3a7426ea9061ebc0c284dab.stex" ]
+source_file="res://sprites/explosion2.png"
+dest_files=[ "res://.import/explosion2.png-013a656a1fea18253a37449fbafda691.stex" ]
 
 [params]
 

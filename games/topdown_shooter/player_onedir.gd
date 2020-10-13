@@ -6,6 +6,7 @@ export var fire_rate = 0.2
 export var bulletspray = 50
 var velocity = Vector2()
 
+
 #var Bullet = preload("res://games/topdown_shooter/bullet.tscn")
 var Bullet = preload("res://games/topdown_shooter/bullet_kine.tscn")
 

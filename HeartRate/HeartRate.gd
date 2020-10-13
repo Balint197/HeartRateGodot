@@ -47,10 +47,10 @@ func _on_Timer_timeout():
 	logResults()
 	#drawCharts()
 
-	dataRating(RMSSD_borders, 250)
-	dataRating(SDNN_borders, 5)
-	dataRating(PNN50_borders, 5)
-	dataRating(PNN20_borders, 5)
-	dataRating(SI_borders, 5)
+	dataRating(RMSSD_borders, RMSSD)
+	dataRating(SDNN_borders, SDNN)
+	dataRating(PNN50_borders, pNN50)
+	dataRating(PNN20_borders, pNN20)
+	dataRating(SI_borders, SI)
 
 

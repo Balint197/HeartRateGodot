@@ -7,38 +7,38 @@ export (int, 1, 999999999) var RR_use_time = 30000 # TODO? -> = 0: all used
 
 # !!! modify values here, export is broken (gives null sometimes)
 export (Dictionary) var RMSSD_borders = {
-	RMSSD_verylow = 0,
-	RMSSD_low     = 50,
-	RMSSD_mid     = 100,
-	RMSSD_high    = 150
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
 }
 
 export (Dictionary) var SDNN_borders = {
-	SDNN_verylow = 0,
-	SDNN_low     = 10,
-	SDNN_mid     = 20,
-	SDNN_high    = 30
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
 }
 
 export (Dictionary) var PNN50_borders = {
-	pNN50_verylow = 0,
-	pNN50_low     = 10,
-	pNN50_mid     = 20,
-	pNN50_high    = 30
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
 }
 
 export (Dictionary) var PNN20_borders = {
-	pNN20_verylow = 0,
-	pNN20_low     = 10,
-	pNN20_mid     = 20,
-	pNN20_high    = 30
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
 }
 
 export (Dictionary) var SI_borders = {
-	SI_verylow = 0,
-	SI_low     = 10,
-	SI_mid     = 20,
-	SI_high    = 30
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
 }
 
 ### INIT VARS ###
@@ -65,10 +65,10 @@ onready var time = str(OS.get_datetime().year) + ". " + str(OS.get_datetime().mo
 	+ "-"  + str(OS.get_datetime().minute) + "-" + str(OS.get_datetime().second)
 
 export (String) var folder_location = "C:/Users/hajna/HeartRateLogs"
-export (String) var save_file_name = "HeartRateAnalysisLog_"
+export (String) var save_file_name = "HeartRateAnalysisLog_" 
 
 onready var results_file = File.new()
-onready var results_filename = save_file_name + time + ".csv"
+onready var results_filename = save_file_name + Globals.gameType + "_" + time + ".csv"
 
 
 
@@ -234,7 +234,13 @@ func _on_test_button_button_down():
 	pass
 
 func dataRating(analysis_dictionary: Dictionary, data):
-	
+	# adjusting borders
+
+	if data > analysis_dictionary[analysis_dictionary.size()-1]:
+		analysis_dictionary[analysis_dictionary.size()-1] = data
+
+
+	# classifying new value
 	var lastGood
 	var i = 0
 
