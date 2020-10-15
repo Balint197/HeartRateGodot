@@ -3,7 +3,6 @@
 [ext_resource path="res://games/topdown_shooter/player_onedir.gd" type="Script" id=1]
 [ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=2]
 
-
 [sub_resource type="CircleShape2D" id=1]
 
 [sub_resource type="Gradient" id=2]
@@ -91,5 +90,4 @@ amount = 60
 lifetime = 60.0
 local_coords = false
 process_material = SubResource( 7 )
-[connection signal="input_event" from="." to="." method="_on_player_input_event"]
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]

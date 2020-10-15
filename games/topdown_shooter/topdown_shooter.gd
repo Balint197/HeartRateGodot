@@ -7,24 +7,57 @@ onready var nav_2d = $Navigation2D
 onready var enemy_scene = preload("res://games/topdown_shooter/enemy.tscn")
 onready var enemies_node = get_node("enemies")
 onready var spawnTimer = $spawnTimer
+onready var levelChangeTimer = $level_Timer
+onready var currentLevel = 0
 
+# possible modes, scene start test
+export (String, 
+			"Simple timer", 				# spawn enemy on timer, timer triggers more often with time
+			"Simple adaptive difficulty", 	# max number of allowed enemies, spawn instantly if under max, increase max enemies with time, maybe score based
+			"Level progression",			# preset levels and progression between them
+			"Heart adaptive difficulty", 	# using HR data, fuzzy logic
+			"Heart And Simple Adaptive") var GameType 	#  combine fuzzy with score based (2)
 
+# assign task 1 and 2 to possible mode
 export (String, 
 			"Simple timer", 
-			"Classic adaptive difficulty", 
-			"Heart adaptive difficulty", 
-			"Heart And Classic Adaptive") var GameType
-
-export (String, 
-			"Simple timer", 
-			"Classic adaptive difficulty") var basic_game
+			"Simple adaptive difficulty",
+			"Level progression") var basic_game
 
 export (String, 
 			"Heart adaptive difficulty", 
-			"Heart And Classic Adaptive") var HR_game
+			"Heart And Simple Adaptive") var HR_game
 
+# vars for "Simple timer":
+export (float) var spawnTimeDecrease = 0.05
+export (int) var spawnTimeInitial = 5
 
-export (int) var ClassicAdaptiveEnemies = 5
+# vars for "Simple adaptive difficulty":
+export (int) var SimpleAdaptiveEnemies = 5
+
+# vars for "Level progression":
+export (int) var levelChangeTime = 30
+
+# set difficulty levels, value is timer wait time
+export (Dictionary) var levels = {
+	0: 9999,	# no enemies spawned
+	1: 10,
+	2: 5,
+	3: 3,
+	4: 2,
+	5: 1
+}
+
+export (Dictionary) var levelProgression = {
+	0: 0,
+	1: 2, 
+	2: 5, 
+	3: 2, 
+	4: 5, 
+	5: 1, 
+	6: 4, 
+	7: 5
+}
 
 func _ready():
 	match Globals.gameType:
@@ -35,12 +68,19 @@ func _ready():
 
 	match GameType:
 		"Simple timer":
+			spawnTimer.wait_time = spawnTimeInitial
+			spawnTimer.start()
+		"Simple adaptive difficulty":
+			spawnTimer.start()
+		"Level progression":
+			levelChangeTimer.wait_time = levelChangeTime
+			levelChangeTimer.start()
 			spawnTimer.start()
 		"Heart adaptive difficulty":
 			# TODO add heartratespawner
 			pass
-		"Classic adaptive difficulty":
-			spawnTimer.start()
+		"Heart And Simple Adaptive":
+			pass
 
 	initFile(folder_location)
 	
@@ -53,7 +93,7 @@ func _ready():
 
 
 func _on_HR_Timer_timeout():
-	updateRR() 	# from IBI file (logfile unused)
+	updateRR()
 	
 	HR = HR_func() 
 	RMSSD = RMSSD_func()
@@ -67,12 +107,17 @@ func _on_HR_Timer_timeout():
 
 	logResults()
 	
+	# @TODO add others
+	if Globals.gameType == basic_game:
+		adjust_border(Globals.minSDNN, SDNN, "min")
+		adjust_border(Globals.maxSDNN, SDNN, "max")
+
 	dataRating(RMSSD_borders, RMSSD)
 	dataRating(SDNN_borders, SDNN)
 	dataRating(PNN50_borders, pNN50)
 	dataRating(PNN20_borders, pNN20)
 	dataRating(SI_borders, SI)
-	
+
 
 
 func spawnEnemy():
@@ -85,7 +130,8 @@ func spawnEnemy():
 func _on_spawnTimer_timeout():
 	if GameType == "Simple Timer":
 		spawnEnemy()
-	if GameType == "Classic adaptive difficulty" && $enemies.get_child_count() < ClassicAdaptiveEnemies:
+		spawnTimer.wait_time -= spawnTimeDecrease
+	if GameType == "Simple adaptive difficulty" && $enemies.get_child_count() < SimpleAdaptiveEnemies:
 		spawnEnemy()
 		# TODO increase number of allowed enemies over time / score 
 
@@ -99,3 +145,20 @@ func _on_hit_player():
 	health -= 1
 	print(health)
 
+func game_end():
+
+# warning-ignore:return_value_discarded
+	get_tree().change_scene("res://HeartRate/menu.tscn")
+
+func set_difficulty(level: int): 	# @TODO speed, level length?
+	spawnTimer.wait_time = levels[level]
+
+
+func _on_level_Timer_timeout():
+	currentLevel += 1
+	set_difficulty(levelProgression[currentLevel])
+
+func set_HR_difficulty():
+	
+	
+	pass

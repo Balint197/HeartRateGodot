@@ -254,3 +254,12 @@ func dataRating(analysis_dictionary: Dictionary, data):
 		else:
 			#print(lastGood)
 			return
+
+func adjust_border(current_value, check_value, compare: String):
+	match compare:
+		"max":
+			if current_value < check_value:
+				current_value = check_value
+		"min":
+			if current_value > check_value:
+				current_value = check_value

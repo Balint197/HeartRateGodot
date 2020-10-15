@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://games/topdown_shooter/level_side_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://games/topdown_shooter/obstacle.tscn" type="PackedScene" id=2]
@@ -8,11 +8,12 @@
 [ext_resource path="res://games/topdown_shooter/spawnPath.tscn" type="PackedScene" id=6]
 [ext_resource path="res://games/topdown_shooter/player_onedir.tscn" type="PackedScene" id=7]
 [ext_resource path="res://games/topdown_shooter/enemy.tscn" type="PackedScene" id=8]
+[ext_resource path="res://games/topdown_shooter/HP_bar.tscn" type="PackedScene" id=9]
 
 [node name="topdown_shooter" type="Node2D"]
 script = ExtResource( 5 )
 folder_location = "C:/HeartRateLogs"
-GameType = "Classic adaptive difficulty"
+GameType = "Simple timer"
 
 [node name="Navigation2D" type="Navigation2D" parent="."]
 
@@ -175,6 +176,11 @@ position = Vector2( 1205.46, -49.5134 )
 
 [node name="HR_Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="level_Timer" type="Timer" parent="."]
+
+[node name="HP_bar" parent="." instance=ExtResource( 9 )]
 [connection signal="timeout" from="Navigation2D/ai_Timer" to="." method="_on_ai_Timer_timeout"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]
 [connection signal="timeout" from="HR_Timer" to="." method="_on_HR_Timer_timeout"]
+[connection signal="timeout" from="level_Timer" to="." method="_on_level_Timer_timeout"]

@@ -50,6 +50,11 @@ func _physics_process(_delta):
 	if dir.length() > 5:
 		rotation = dir.angle()
 		velocity = move_and_slide(velocity)
+		
+		for i in get_slide_count():
+			var collision = get_slide_collision(i)
+			print("Collided with: ", collision.collider.name)
+
 
 
 func _on_firetimer_timeout():

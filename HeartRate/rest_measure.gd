@@ -31,5 +31,8 @@ func _on_Timer_timeout():
 
 		logResults()
 
+		Globals.restSDNN = SDNN
+		# @TODO add others...	
+		
 		$Timer.stop()
 		get_tree().change_scene("res://HeartRate/menu.tscn")
