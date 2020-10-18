@@ -1,6 +1,7 @@
 extends "res://HeartRate/HeartRateScript.gd"
 
-export var health = 100
+export var health = 10
+export var pixelizeAmount = 0.05
 
 onready var player = $player
 onready var nav_2d = $Navigation2D
@@ -9,6 +10,9 @@ onready var enemies_node = get_node("enemies")
 onready var spawnTimer = $spawnTimer
 onready var levelChangeTimer = $level_Timer
 onready var currentLevel = 0
+onready var pixelize = $Pixelize
+
+var canGetHurt = true
 
 # possible modes, scene start test
 export (String, 
@@ -81,6 +85,8 @@ func _ready():
 			pass
 		"Heart And Simple Adaptive":
 			pass
+			
+	$HP_bar.max_value = health
 
 	initFile(folder_location)
 	
@@ -91,6 +97,8 @@ func _ready():
 	results_file.store_csv_line(results_arr[0],";")
 	results_file.close()
 
+func _process(delta):
+	$HP_bar.value = lerp($HP_bar.value, health, 0.3)
 
 func _on_HR_Timer_timeout():
 	updateRR()
@@ -142,10 +150,27 @@ func _on_ai_Timer_timeout(): # gives enemies pathfinding
 		enemy_instance.path = new_path
 
 func _on_hit_player():
-	health -= 1
-	print(health)
+	if canGetHurt:
+		health -= 1
+		#$HP_bar.value = health
+		
+		$player/HitAnimationPlayer.play("hit")
+		for i in range(4):
+			$player/HitAnimationPlayer.queue("hit")
+		$Camera2D.shake(0.2, 30, 15)
+		canGetHurt = false
+		$hit_timer.start()
+
+
+		$pixelizeAnimationPlayer.play("pixelize")
+#		pixelize.material.set_shader_param("size_x", pixelizeAmount)
+#		pixelize.material.set_shader_param("size_y", pixelizeAmount)
+		
+		if health == 0:
+			game_end()
 
 func game_end():
+
 
 # warning-ignore:return_value_discarded
 	get_tree().change_scene("res://HeartRate/menu.tscn")
@@ -162,3 +187,7 @@ func set_HR_difficulty():
 	
 	
 	pass
+
+
+func _on_hit_timer_timeout():
+	canGetHurt = true

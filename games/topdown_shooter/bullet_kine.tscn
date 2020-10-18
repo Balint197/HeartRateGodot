@@ -1,9 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=1]
 [ext_resource path="res://games/topdown_shooter/bullet_kine.gd" type="Script" id=2]
-
-
+[ext_resource path="res://sprites/playerLight.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.03796, 5.04653 )
@@ -24,3 +23,7 @@ region_rect = Rect2( 197, 0, 20, 19 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
+
+[node name="Light2D" type="Light2D" parent="."]
+texture = ExtResource( 3 )
+shadow_enabled = true

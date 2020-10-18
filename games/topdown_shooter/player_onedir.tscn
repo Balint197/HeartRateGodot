@@ -1,9 +1,14 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://games/topdown_shooter/player_onedir.gd" type="Script" id=1]
-[ext_resource path="res://sprites/sheet_charactersEquipment.png" type="Texture" id=2]
+[ext_resource path="res://sprites/playerHand.png" type="Texture" id=2]
+[ext_resource path="res://sprites/playerBasepng.png" type="Texture" id=3]
+[ext_resource path="res://sprites/gun.png" type="Texture" id=4]
+[ext_resource path="res://sprites/light_cone.png" type="Texture" id=5]
+[ext_resource path="res://sprites/playerLight.png" type="Texture" id=6]
 
 [sub_resource type="CircleShape2D" id=1]
+radius = 23.6414
 
 [sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 0.909804, 0.0941176, 0.0941176, 1, 0.776471, 0.796078, 0.0980392, 1 )
@@ -47,6 +52,206 @@ scale = 5.0
 scale_curve = SubResource( 6 )
 color = Color( 0.890196, 0.811765, 0.176471, 1 )
 
+[sub_resource type="Animation" id=8]
+resource_name = "hit"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("spr_human:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("spr_human:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.3, 1.3 ), Vector2( 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "reload"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("spr_human/gunHand/gun:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 0.392292, 0.392292, 1, 1, 1 ),
+"update": 0,
+"values": [ 2.5, 2.5, -83.0, -83.0, 2.5 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("spr_human/gunHand/gun:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.05, 0.2, 0.5, 0.575, 0.625, 0.7, 1 ),
+"transitions": PoolRealArray( 0.0980731, 1, 1, 1, 1, 1, 2.2974, 1 ),
+"update": 0,
+"values": [ Vector2( 27, -14 ), Vector2( 8, -14 ), Vector2( 27, -14 ), Vector2( 27, -14 ), Vector2( 23, -10 ), Vector2( 30, -18 ), Vector2( 27, -14 ), Vector2( 27, -14 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("spr_human/emptyHand:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.5, 0.575, 0.625, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 20.0, -13.0, 14.0, 0.0 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("spr_human/gunHand:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -6, 37 ), Vector2( -1, 37 ), Vector2( -1, 37 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("spr_human:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.2, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -8, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("spr_human/gunHand/gun:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 4.0, 1.0, 4.0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("spr_human/emptyHand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector2( 7.06667, -36.3464 ), Vector2( -2, -36.346 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("spr_human/gunHand:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -1, 37 ), Vector2( 13, 37 ), Vector2( -1, 37 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("spr_human/emptyHand:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 8.0, 0.0 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("spr_human/gunHand:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ -7.0, 0.0, -7.0 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "walk"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("spr_human:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.55, 0.55 ), Vector2( 0.5, 0.5 ) ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "hit"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("spr_human:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("spr_human:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.5, 0.5 ), Vector2( 0.6, 0.6 ), Vector2( 0.5, 0.5 ) ]
+}
+
 [node name="player_onedir" type="KinematicBody2D"]
 collision_mask = 2147483671
 script = ExtResource( 1 )
@@ -56,24 +261,39 @@ fire_rate = 0.5
 shape = SubResource( 1 )
 
 [node name="spr_human" type="Sprite" parent="."]
-texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 116, 32, 21, 30 )
+position = Vector2( -8, 0 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
 
-[node name="spr_weapon" type="Sprite" parent="spr_human"]
-position = Vector2( 17.452, 5.389 )
-rotation = 3.14159
+[node name="emptyHand" type="Sprite" parent="spr_human"]
+position = Vector2( 7.06667, -36.3464 )
 z_index = -1
 texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 0, 132, 30, 9 )
+offset = Vector2( 10, 8 )
 
-[node name="firetimer" type="Timer" parent="."]
+[node name="gunHand" type="Sprite" parent="spr_human"]
+position = Vector2( -1, 37 )
+rotation = -0.122173
+z_index = -1
+texture = ExtResource( 2 )
+offset = Vector2( 9, -8 )
+flip_v = true
 
-[node name="Muzzle" type="Position2D" parent="."]
-position = Vector2( 29.9661, 7.11694 )
+[node name="gun" type="Sprite" parent="spr_human/gunHand"]
+position = Vector2( 27, -14 )
+rotation = 0.0698132
+texture = ExtResource( 4 )
+offset = Vector2( 24, 0 )
 
-[node name="flash" type="Particles2D" parent="Muzzle"]
+[node name="Muzzle" type="Position2D" parent="spr_human/gunHand/gun"]
+position = Vector2( 30, 0 )
+scale = Vector2( 4, 4 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="flash" type="Particles2D" parent="spr_human/gunHand/gun/Muzzle"]
+scale = Vector2( 0.5, 0.5 )
 emitting = false
 amount = 50
 lifetime = 0.3
@@ -82,12 +302,43 @@ explosiveness = 0.82
 local_coords = false
 process_material = SubResource( 4 )
 
-[node name="bulletcase" type="Particles2D" parent="Muzzle"]
-position = Vector2( -10, 0 )
+[node name="bulletcase" type="Particles2D" parent="spr_human/gunHand/gun/Muzzle"]
+position = Vector2( -12, 0 )
+scale = Vector2( 0.5, 0.5 )
 z_index = -3
 emitting = false
 amount = 60
 lifetime = 60.0
 local_coords = false
 process_material = SubResource( 7 )
+
+[node name="firetimer" type="Timer" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/hit = SubResource( 8 )
+anims/reload = SubResource( 9 )
+anims/walk = SubResource( 10 )
+
+[node name="WalkAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/walk = SubResource( 11 )
+
+[node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/hit = SubResource( 12 )
+
+[node name="coneLight" type="Light2D" parent="."]
+position = Vector2( -1, 3 )
+texture = ExtResource( 5 )
+offset = Vector2( 512, 0 )
+shadow_enabled = true
+shadow_gradient_length = 3.0
+shadow_filter = 5
+shadow_filter_smooth = 12.0
+
+[node name="playerLight" type="Light2D" parent="."]
+texture = ExtResource( 6 )
+texture_scale = 4.0
+shadow_enabled = true
+shadow_gradient_length = 7.0
+shadow_filter = 1
+shadow_filter_smooth = 2.0
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]

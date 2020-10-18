@@ -6,6 +6,9 @@ export var fire_rate = 0.2
 export var bulletspray = 50
 var velocity = Vector2()
 
+onready var Muzzle = $spr_human/gunHand/gun/Muzzle/
+onready var flash = $spr_human/gunHand/gun/Muzzle/flash
+onready var bulletCase = $spr_human/gunHand/gun/Muzzle/bulletcase
 
 #var Bullet = preload("res://games/topdown_shooter/bullet.tscn")
 var Bullet = preload("res://games/topdown_shooter/bullet_kine.tscn")
@@ -15,7 +18,7 @@ onready var firetimer = $firetimer
 
 func _ready():
 	firetimer.wait_time = fire_rate 
-	$Muzzle/bulletcase.amount = float(60/fire_rate)
+	bulletCase.amount = float(60/fire_rate)
 
 func _process(_delta):
 	look_at(get_global_mouse_position())
@@ -36,13 +39,15 @@ func get_input():
 
 func shoot():
 	var bullet = Bullet.instance()
-	bullet.start($Muzzle.global_position, rotation, bullet_speed, bulletspray)
+	bullet.start(Muzzle.global_position, rotation, bullet_speed, bulletspray)
 	get_tree().get_root().add_child(bullet)
 	can_fire = false
 	firetimer.start()
-	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 5)
-	$Muzzle/flash.emitting = true
-	$Muzzle/bulletcase.emitting = true
+	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 10)
+	flash.emitting = true
+	bulletCase.emitting = true
+
+	$AnimationPlayer.play("reload")
 	
 func _physics_process(_delta):
 	get_input()
@@ -51,13 +56,15 @@ func _physics_process(_delta):
 		rotation = dir.angle()
 		velocity = move_and_slide(velocity)
 		
-		for i in get_slide_count():
-			var collision = get_slide_collision(i)
-			print("Collided with: ", collision.collider.name)
+#		for i in get_slide_count():
+#			var collision = get_slide_collision(i)
+#			print("Collided with: ", collision.collider.name)
+	if $AnimationPlayer.current_animation != "reload" && velocity != Vector2(0,0):
+		$AnimationPlayer.play("walk")
 
-
+	if velocity != Vector2(0,0):
+		$WalkAnimationPlayer.play("walk")
 
 func _on_firetimer_timeout():
 	can_fire = true
-	$Muzzle/bulletcase.emitting = false
-	
+	bulletCase.emitting = false

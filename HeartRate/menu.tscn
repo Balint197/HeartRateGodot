@@ -33,94 +33,82 @@ __meta__ = {
 }
 
 [node name="rest" type="Label" parent="ItemList"]
-margin_right = 205.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-size_flags_vertical = 2
+margin_right = 105.0
+margin_bottom = 72.0
+size_flags_vertical = 1
 text = "Nyugalmi mérés"
+valign = 1
 
 [node name="restCheckButton" type="CheckBox" parent="ItemList"]
-margin_left = 209.0
-margin_right = 233.0
-margin_bottom = 24.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+margin_left = 109.0
+margin_right = 133.0
+margin_bottom = 72.0
 disabled = true
 
 [node name="restButton" type="Button" parent="ItemList"]
-margin_left = 237.0
-margin_right = 442.0
-margin_bottom = 20.0
+margin_left = 137.0
+margin_right = 443.0
+margin_bottom = 72.0
 size_flags_horizontal = 3
-size_flags_vertical = 2
+size_flags_vertical = 3
 disabled = true
 text = "start"
 
 [node name="task1" type="Label" parent="ItemList"]
 margin_top = 76.0
-margin_right = 205.0
-margin_bottom = 90.0
-size_flags_horizontal = 3
-size_flags_vertical = 2
+margin_right = 105.0
+margin_bottom = 148.0
+size_flags_vertical = 1
 text = "Feladat 1"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="task1CheckButton" type="CheckBox" parent="ItemList"]
-margin_left = 209.0
+margin_left = 109.0
 margin_top = 76.0
-margin_right = 233.0
-margin_bottom = 100.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+margin_right = 133.0
+margin_bottom = 148.0
 disabled = true
 
 [node name="task1Button" type="Button" parent="ItemList"]
-margin_left = 237.0
+margin_left = 137.0
 margin_top = 76.0
-margin_right = 442.0
-margin_bottom = 96.0
+margin_right = 443.0
+margin_bottom = 148.0
 size_flags_horizontal = 3
-size_flags_vertical = 2
+size_flags_vertical = 3
 disabled = true
 text = "start"
 
 [node name="task2" type="Label" parent="ItemList"]
 margin_top = 152.0
-margin_right = 205.0
-margin_bottom = 166.0
-size_flags_horizontal = 3
-size_flags_vertical = 2
+margin_right = 105.0
+margin_bottom = 224.0
+size_flags_vertical = 1
 text = "Feladat 2"
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="task2CheckButton" type="CheckBox" parent="ItemList"]
-margin_left = 209.0
+margin_left = 109.0
 margin_top = 152.0
-margin_right = 233.0
-margin_bottom = 176.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+margin_right = 133.0
+margin_bottom = 224.0
 disabled = true
 
 [node name="task2Button" type="Button" parent="ItemList"]
-margin_left = 237.0
+margin_left = 137.0
 margin_top = 152.0
-margin_right = 442.0
-margin_bottom = 172.0
+margin_right = 443.0
+margin_bottom = 224.0
 size_flags_horizontal = 3
-size_flags_vertical = 2
+size_flags_vertical = 3
 disabled = true
 text = "start"
-
-[node name="testButton" type="Button" parent="."]
-margin_left = 111.907
-margin_top = 549.056
-margin_right = 235.907
-margin_bottom = 664.056
 
 [node name="endLabel" type="Label" parent="."]
 visible = false
@@ -150,5 +138,4 @@ __meta__ = {
 [connection signal="pressed" from="ItemList/restButton" to="." method="_on_restButton_pressed"]
 [connection signal="pressed" from="ItemList/task1Button" to="." method="_on_task1Button_pressed"]
 [connection signal="pressed" from="ItemList/task2Button" to="." method="_on_task2Button_pressed"]
-[connection signal="pressed" from="testButton" to="." method="_on_testButton_pressed"]
 [connection signal="pressed" from="endLabel/Button" to="." method="_on_Button_pressed"]

@@ -3,6 +3,31 @@ extends KinematicBody2D
 signal hit_player
 
 export var speed = 200
+export var damageDistance = 50
+
+var texture_0_0 = preload("res://sprites/enemies/0_0.png")
+var texture_0_1 = preload("res://sprites/enemies/0_1.png")
+#var texture_1_0 = preload("res://sprites/enemies/1_0.png")
+#var texture_1_1 = preload("res://sprites/enemies/1_1.png")
+var texture_2_0 = preload("res://sprites/enemies/2_0.png")
+var texture_2_1 = preload("res://sprites/enemies/2_1.png")
+var texture_3_0 = preload("res://sprites/enemies/3_0.png")
+var texture_3_1 = preload("res://sprites/enemies/3_1.png")
+var texture_4_0 = preload("res://sprites/enemies/4_0.png")
+var texture_4_1 = preload("res://sprites/enemies/4_1.png")
+var texture_5_0 = preload("res://sprites/enemies/5_0.png")
+var texture_5_1 = preload("res://sprites/enemies/5_1.png")
+var texture_6_0 = preload("res://sprites/enemies/6_0.png")
+var texture_6_1 = preload("res://sprites/enemies/6_1.png")
+var texture_7_0 = preload("res://sprites/enemies/7_0.png")
+var texture_7_1 = preload("res://sprites/enemies/7_1.png")
+var texture_8_0 = preload("res://sprites/enemies/8_0.png")
+var texture_8_1 = preload("res://sprites/enemies/8_1.png")
+
+
+
+var texture_array_0 = [texture_0_0, texture_2_0, texture_3_0, texture_4_0, texture_5_0, texture_6_0, texture_7_0, texture_8_0]
+var texture_array_1 = [texture_0_1, texture_2_1, texture_3_1, texture_4_1, texture_5_1, texture_6_1, texture_7_1, texture_8_1]
 
 onready var control_node = get_tree().get_root().get_node("topdown_shooter")
 onready var player = get_tree().get_root().get_node("topdown_shooter").get_node("player")
@@ -13,15 +38,19 @@ var path: = PoolVector2Array() setget set_path
 func _ready():
 	connect("hit_player", control_node, "_on_hit_player")
 	set_process(false)
+	
+	randomize()
+	var sprite_number = rand_range(0, texture_array_0.size())
+	$spr_enemy.texture = texture_array_0[sprite_number]
+	$spr_enemy/hands.texture = texture_array_1[sprite_number]
 
 func _physics_process(delta):
 	var move_distance = speed * delta
 	move_along_path(move_distance)
 	if path.size() != 0:
 		look_at(path[0])
-	else: 
+	if player.get_global_position().distance_to(get_global_position()) < damageDistance:
 		emit_signal("hit_player")
-		pass#print("GG")
 
 func move_along_path(distance: float):
 	var start_point = position
@@ -47,8 +76,7 @@ func set_path(value : PoolVector2Array):
 	set_process(true)
 
 func hit():
-	print("dead")
 	var corpse_instance = corpse.instance()
 	corpse_instance.position = get_global_position()
-	get_tree().get_root().add_child(corpse_instance)
+	get_tree().get_root().get_node("topdown_shooter").add_child(corpse_instance)
 	queue_free()

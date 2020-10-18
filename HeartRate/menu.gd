@@ -38,7 +38,3 @@ func _on_task2Button_pressed():
 
 func _on_Button_pressed():
 	get_tree().quit()
-
-func _on_testButton_pressed():
-	Globals.tasksdone += 1
-	get_tree().change_scene("res://HeartRate/menu.tscn")
