@@ -11,6 +11,7 @@ onready var spawnTimer = $spawnTimer
 onready var levelChangeTimer = $level_Timer
 onready var currentLevel = 0
 onready var pixelize = $Pixelize
+onready var blur = $Blur
 
 var canGetHurt = true
 
@@ -97,8 +98,11 @@ func _ready():
 	results_file.store_csv_line(results_arr[0],";")
 	results_file.close()
 
-func _process(delta):
+func _process(_delta):
 	$HP_bar.value = lerp($HP_bar.value, health, 0.3)
+	
+	blur.rect_position = player.get_global_position() - blur.rect_pivot_offset
+	blur.rect_rotation = player.rotation_degrees
 
 func _on_HR_Timer_timeout():
 	updateRR()
@@ -155,7 +159,7 @@ func _on_hit_player():
 		#$HP_bar.value = health
 		
 		$player/HitAnimationPlayer.play("hit")
-		for i in range(4):
+		for _i in range(4):
 			$player/HitAnimationPlayer.queue("hit")
 		$Camera2D.shake(0.2, 30, 15)
 		canGetHurt = false

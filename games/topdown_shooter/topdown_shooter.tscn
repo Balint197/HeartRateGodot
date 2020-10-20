@@ -1,4 +1,4 @@
-[gd_scene load_steps=133 format=2]
+[gd_scene load_steps=136 format=2]
 
 [ext_resource path="res://games/topdown_shooter/level_side_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://games/topdown_shooter/obstacle.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://sprites/tilesheet_complete_2X.png" type="Texture" id=8]
 [ext_resource path="res://games/topdown_shooter/HP_bar.tscn" type="PackedScene" id=9]
 [ext_resource path="res://sprites/white.png" type="Texture" id=10]
+[ext_resource path="res://sprites/light_cone_invert_big.png" type="Texture" id=11]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 128, 128, 0, 128, 0, 0, 128, 0 )
@@ -777,8 +778,27 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=121]
 shader = SubResource( 120 )
-shader_param/size_x = 0.02
-shader_param/size_y = 0.02
+shader_param/size_x = 0.001
+shader_param/size_y = 0.001
+
+[sub_resource type="Shader" id=123]
+code = "shader_type canvas_item;
+
+uniform float amount: hint_range(0.0, 5.0);
+
+void fragment() {
+	vec2 SCREEN;
+	SCREEN = SCREEN_UV;
+	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, amount).rgb;
+	
+	//COLOR.rgba = texture(TEXTURE, UV); // mask
+	COLOR.rgba *= texture(TEXTURE, UV);
+}
+"
+
+[sub_resource type="ShaderMaterial" id=124]
+shader = SubResource( 123 )
+shader_param/amount = 1.5
 
 [sub_resource type="Animation" id=122]
 resource_name = "pixelize"
@@ -831,7 +851,7 @@ GameType = "Simple adaptive difficulty"
 basic_game = "Simple adaptive difficulty"
 
 [node name="player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 234.598, 550.525 )
+position = Vector2( 250, 540 )
 fire_rate = 1.0
 bulletspray = 10
 
@@ -1040,8 +1060,30 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 texture = ExtResource( 10 )
 expand = true
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Blur" type="TextureRect" parent="."]
+material = SubResource( 124 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1330.0
+margin_top = -1500.0
+margin_right = 2766.0
+margin_bottom = 2596.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_pivot_offset = Vector2( 1630, 2040 )
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
 
 [node name="pixelizeAnimationPlayer" type="AnimationPlayer" parent="."]

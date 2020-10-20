@@ -326,7 +326,7 @@ anims/walk = SubResource( 11 )
 anims/hit = SubResource( 12 )
 
 [node name="coneLight" type="Light2D" parent="."]
-position = Vector2( -1, 3 )
+position = Vector2( -1, 5.99658 )
 texture = ExtResource( 5 )
 offset = Vector2( 512, 0 )
 shadow_enabled = true
