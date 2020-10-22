@@ -3,9 +3,16 @@ extends Node
 
 # export (int, 1, 9999) var RR_use_amount = 10 # using RR_use_time instead
 onready var RR_use_amount = 0
-export (int, 1, 999999999) var RR_use_time = 30000 # TODO? -> = 0: all used
+export (int, 1, 999999999) var RR_use_time = 30000
 
 # !!! modify values here, export is broken (gives null sometimes)
+export (Dictionary) var HR_borders = {
+	0: 0,
+	1: 50,
+	2: 100,
+	3: 150
+}
+
 export (Dictionary) var RMSSD_borders = {
 	0: 0,
 	1: 50,
@@ -255,11 +262,12 @@ func dataRating(analysis_dictionary: Dictionary, data):
 			#print(lastGood)
 			return
 
-func adjust_border(current_value, check_value, compare: String):
+func adjust_border(current_value: float, new_value: float, compare: String):
 	match compare:
 		"max":
-			if current_value < check_value:
-				current_value = check_value
+			if current_value < new_value:
+				current_value = new_value
 		"min":
-			if current_value > check_value:
-				current_value = check_value
+			if current_value > new_value:
+				current_value = new_value
+	return current_value

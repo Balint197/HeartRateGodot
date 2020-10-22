@@ -8,7 +8,6 @@ var velocity = Vector2()
 
 onready var Muzzle = $spr_human/gunHand/gun/Muzzle/
 onready var flash = $spr_human/gunHand/gun/Muzzle/flash
-onready var bulletCase = $spr_human/gunHand/gun/Muzzle/bulletcase 
 
 #var Bullet = preload("res://games/topdown_shooter/bullet.tscn")
 var Bullet = preload("res://games/topdown_shooter/bullet_kine.tscn")
@@ -18,7 +17,6 @@ onready var firetimer = $firetimer
 
 func _ready():
 	firetimer.wait_time = fire_rate 
-	bulletCase.amount = float(60/fire_rate)
 
 func _process(_delta):
 	look_at(get_global_mouse_position())
@@ -44,7 +42,6 @@ func shoot():
 	firetimer.start()
 	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 10)
 	flash.emitting = true
-	bulletCase.emitting = true
 
 	$AnimationPlayer.play("reload")
 	
@@ -66,4 +63,3 @@ func _physics_process(_delta):
 
 func _on_firetimer_timeout():
 	can_fire = true
-	bulletCase.emitting = false

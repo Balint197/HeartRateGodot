@@ -10,7 +10,9 @@
 [ext_resource path="res://sprites/tilesheet_complete_2X.png" type="Texture" id=8]
 [ext_resource path="res://games/topdown_shooter/HP_bar.tscn" type="PackedScene" id=9]
 [ext_resource path="res://sprites/white.png" type="Texture" id=10]
-[ext_resource path="res://sprites/light_cone_invert_big.png" type="Texture" id=11]
+[ext_resource path="res://sprites/light_cone_inverted.png" type="Texture" id=11]
+[ext_resource path="res://games/topdown_shooter/bur.shader" type="Shader" id=12]
+[ext_resource path="res://games/topdown_shooter/pixelize.shader" type="Shader" id=13]
 
 [sub_resource type="NavigationPolygon" id=1]
 vertices = PoolVector2Array( 128, 128, 0, 128, 0, 0, 128, 0 )
@@ -762,46 +764,17 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 } ]
 1/z_index = 0
 
-[sub_resource type="Shader" id=120]
-code = "shader_type canvas_item;
-
-uniform float size_x = 0.008;
-uniform float size_y = 0.008;
-
-void fragment() {
-	vec2 uv = SCREEN_UV;
-	uv -= mod(uv, vec2(size_x, size_y));
-	
-	COLOR.rgb = textureLod(SCREEN_TEXTURE, uv, 0.0).rgb;
-}
-"
-
-[sub_resource type="ShaderMaterial" id=121]
-shader = SubResource( 120 )
+[sub_resource type="ShaderMaterial" id=120]
+shader = ExtResource( 13 )
 shader_param/size_x = 0.001
 shader_param/size_y = 0.001
 
-[sub_resource type="Shader" id=123]
-code = "shader_type canvas_item;
-
-uniform float amount: hint_range(0.0, 5.0);
-
-void fragment() {
-	vec2 SCREEN;
-	SCREEN = SCREEN_UV;
-	COLOR.rgb = textureLod(SCREEN_TEXTURE, SCREEN_UV, amount).rgb;
-	
-	//COLOR.rgba = texture(TEXTURE, UV); // mask
-	COLOR.rgba *= texture(TEXTURE, UV);
-}
-"
-
-[sub_resource type="ShaderMaterial" id=124]
-shader = SubResource( 123 )
-shader_param/amount = 1.5
+[sub_resource type="ShaderMaterial" id=121]
+shader = ExtResource( 12 )
+shader_param/amount = 2.282
+shader_param/darkness = 0.66
 
 [sub_resource type="Animation" id=122]
-resource_name = "pixelize"
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Pixelize:material:shader_param/size_x")
@@ -813,7 +786,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.4 ),
 "transitions": PoolRealArray( 0.196146, 1.8025, 1 ),
 "update": 0,
-"values": [ 0.001, 0.02, 0.001 ]
+"values": [ 0.001, 0.01, 0.001 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Pixelize:material:shader_param/size_y")
@@ -846,14 +819,13 @@ __meta__ = {
 "_edit_lock_": true
 }
 folder_location = "C:/HeartRateLogs"
-health = 100
 GameType = "Simple adaptive difficulty"
-basic_game = "Simple adaptive difficulty"
+basic_game = "Simple timer"
 
 [node name="player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 250, 540 )
+position = Vector2( 272.595, 544.757 )
 fire_rate = 1.0
-bulletspray = 10
+bulletspray = 8
 
 [node name="obstacles" type="Node2D" parent="."]
 
@@ -1051,7 +1023,7 @@ margin_bottom = 79.4975
 
 [node name="Pixelize" type="TextureRect" parent="."]
 visible = false
-material = SubResource( 121 )
+material = SubResource( 120 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1387.0
@@ -1065,16 +1037,16 @@ __meta__ = {
 }
 
 [node name="Blur" type="TextureRect" parent="."]
-material = SubResource( 124 )
+material = SubResource( 121 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1330.0
+margin_left = -1250.0
 margin_top = -1500.0
-margin_right = 2766.0
+margin_right = 2846.0
 margin_bottom = 2596.0
 grow_horizontal = 0
 grow_vertical = 0
-rect_pivot_offset = Vector2( 1630, 2040 )
+rect_pivot_offset = Vector2( 1520, 2040 )
 texture = ExtResource( 11 )
 expand = true
 __meta__ = {

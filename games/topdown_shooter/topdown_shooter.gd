@@ -2,6 +2,7 @@ extends "res://HeartRate/HeartRateScript.gd"
 
 export var health = 10
 export var pixelizeAmount = 0.05
+export var HR_initial_difficulty: float = 0.5 
 
 onready var player = $player
 onready var nav_2d = $Navigation2D
@@ -12,6 +13,9 @@ onready var levelChangeTimer = $level_Timer
 onready var currentLevel = 0
 onready var pixelize = $Pixelize
 onready var blur = $Blur
+onready var dataNumber = 0
+onready var targetValue = 0 # TODO make array? TODO do others...
+onready var HRrange = 0 # TODO calculations currently based on 50% HR_initial_difficulty
 
 var canGetHurt = true
 
@@ -34,7 +38,8 @@ export (String,
 			"Heart And Simple Adaptive") var HR_game
 
 # vars for "Simple timer":
-export (float) var spawnTimeDecrease = 0.05
+export (float) var simpleSpawnTimeDecrease = 0.05
+export (float) var HRSpawnTimeChange = 1 # scaled by how big the difference is, modify based on RR_use_time
 export (int) var spawnTimeInitial = 5
 
 # vars for "Simple adaptive difficulty":
@@ -74,21 +79,21 @@ func _ready():
 	match GameType:
 		"Simple timer":
 			spawnTimer.wait_time = spawnTimeInitial
-			spawnTimer.start()
 		"Simple adaptive difficulty":
-			spawnTimer.start()
+			pass
 		"Level progression":
 			levelChangeTimer.wait_time = levelChangeTime
 			levelChangeTimer.start()
-			spawnTimer.start()
 		"Heart adaptive difficulty":
-			# TODO add heartratespawner
+			targetValue = (Globals.minSDNN + Globals.maxSDNN) * HR_initial_difficulty
+			HRrange = Globals.maxSDNN - targetValue
+			spawnTimer.wait_time = (spawnTimeInitial + Globals.easy_game_level) * HR_initial_difficulty
 			pass
 		"Heart And Simple Adaptive":
 			pass
-			
-	$HP_bar.max_value = health
+	spawnTimer.start()
 
+	$HP_bar.max_value = health
 	initFile(folder_location)
 	
 	# add first row to CSV
@@ -115,22 +120,18 @@ func _on_HR_Timer_timeout():
 	SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 	
 	# writing results to array
-	results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
+	results_arr.append([dataNumber,HR,RMSSD,SDNN,pNN50,pNN20,SI])
+	dataNumber += 1
 
 	logResults()
-	
-	# @TODO add others
-	if Globals.gameType == basic_game:
-		adjust_border(Globals.minSDNN, SDNN, "min")
-		adjust_border(Globals.maxSDNN, SDNN, "max")
+	adjustMinMax()
 
+	dataRating(HR_borders, HR)
 	dataRating(RMSSD_borders, RMSSD)
 	dataRating(SDNN_borders, SDNN)
 	dataRating(PNN50_borders, pNN50)
 	dataRating(PNN20_borders, pNN20)
 	dataRating(SI_borders, SI)
-
-
 
 func spawnEnemy():
 	var enemy = enemy_scene.instance()
@@ -138,14 +139,16 @@ func spawnEnemy():
 	enemy.position = $spawnPath/spawnPoint.position
 	enemies_node.add_child(enemy)
 
-
 func _on_spawnTimer_timeout():
-	if GameType == "Simple Timer":
+	if GameType == "Simple timer":
 		spawnEnemy()
-		spawnTimer.wait_time -= spawnTimeDecrease
+		spawnTimer.wait_time -= simpleSpawnTimeDecrease
 	if GameType == "Simple adaptive difficulty" && $enemies.get_child_count() < SimpleAdaptiveEnemies:
 		spawnEnemy()
 		# TODO increase number of allowed enemies over time / score 
+	if GameType == "Heart adaptive difficulty":
+		spawnEnemy()
+		adjustSpawn()
 
 
 func _on_ai_Timer_timeout(): # gives enemies pathfinding
@@ -156,8 +159,7 @@ func _on_ai_Timer_timeout(): # gives enemies pathfinding
 func _on_hit_player():
 	if canGetHurt:
 		health -= 1
-		#$HP_bar.value = health
-		
+
 		$player/HitAnimationPlayer.play("hit")
 		for _i in range(4):
 			$player/HitAnimationPlayer.queue("hit")
@@ -165,33 +167,55 @@ func _on_hit_player():
 		canGetHurt = false
 		$hit_timer.start()
 
-
 		$pixelizeAnimationPlayer.play("pixelize")
-#		pixelize.material.set_shader_param("size_x", pixelizeAmount)
-#		pixelize.material.set_shader_param("size_y", pixelizeAmount)
-		
+
 		if health == 0:
 			game_end()
 
 func game_end():
+	if GameType == "Simple timer":
+		Globals.easy_game_level = spawnTimer.wait_time
+		print("easy game timer: ", Globals.easy_game_level, "\n")
 
+	print("HR: ", Globals.minHR, "-", Globals.maxHR)
+	print("RMSSD: ", Globals.minRMSSD, "-", Globals.maxRMSSD)
+	print("SDNN: ", Globals.minSDNN, "-", Globals.maxSDNN)
+	print("PNN50: ", Globals.minPNN50, "-", Globals.maxPNN50)
+	print("PNN20: ", Globals.minPNN20, "-", Globals.maxPNN20)
+	print("SI: ", Globals.minSI, "-", Globals.maxSI)
 
-# warning-ignore:return_value_discarded
 	get_tree().change_scene("res://HeartRate/menu.tscn")
 
 func set_difficulty(level: int): 	# @TODO speed, level length?
 	spawnTimer.wait_time = levels[level]
 
-
 func _on_level_Timer_timeout():
 	currentLevel += 1
 	set_difficulty(levelProgression[currentLevel])
 
-func set_HR_difficulty():
-	
-	
-	pass
-
-
 func _on_hit_timer_timeout():
 	canGetHurt = true
+
+func adjustMinMax():
+	if Globals.gameType == "basic_game":
+		Globals.minHR = adjust_border(Globals.minHR, HR, "min")
+		Globals.maxHR = adjust_border(Globals.maxHR, HR, "max")
+		Globals.minRMSSD = adjust_border(Globals.minRMSSD, RMSSD, "min")
+		Globals.maxRMSSD = adjust_border(Globals.maxRMSSD, RMSSD, "max")
+		Globals.minSDNN = adjust_border(Globals.minSDNN, SDNN, "min")
+		Globals.maxSDNN = adjust_border(Globals.maxSDNN, SDNN, "max")
+		Globals.minPNN50 = adjust_border(Globals.minPNN50, pNN50, "min")
+		Globals.maxPNN50 = adjust_border(Globals.maxPNN50, pNN50, "max")
+		Globals.minPNN20 = adjust_border(Globals.minPNN20, pNN20, "min")
+		Globals.maxPNN20 = adjust_border(Globals.maxPNN20, pNN20, "max")
+		Globals.minSI = adjust_border(Globals.minSI, SI, "min")
+		Globals.maxSI = adjust_border(Globals.maxSI, SI, "max")
+
+func adjustSpawn(): # TODO add others, weighted based on previous measure
+	if SDNN <= targetValue:		# low stress -> increase difficulty
+		var HRdifference = (targetValue - SDNN) / HRrange # 0-1, % of difference from desired
+		spawnTimer.wait_time -= HRSpawnTimeChange * HRdifference
+
+	if SDNN > targetValue:		# high stress -> decrease difficulty
+		var HRdifference = (SDNN - targetValue) / HRrange # 0-1, % of difference from desired
+		spawnTimer.wait_time += HRSpawnTimeChange * HRdifference

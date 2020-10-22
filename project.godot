@@ -51,6 +51,8 @@ Utilities="*res://addons/easy_charts/Utilities/Scripts/utilities.gd"
 
 window/size/width=1280
 window/size/height=800
+mouse_cursor/custom_image="res://sprites/crosshair131_scale.png"
+mouse_cursor/custom_image_hotspot=Vector2( 32, 32 )
 
 [editor_plugins]
 

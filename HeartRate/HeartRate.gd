@@ -39,14 +39,13 @@ func _on_Timer_timeout():
 	SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 	$analysis_container/SI_label.text = ("SI: " + str(SI))
 
-	# TODO detect trends, graph, separate timer, run less often?
-
 	# writing results to array
 	results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
 
 	logResults()
 	#drawCharts()
 
+	dataRating(HR_borders, HR)
 	dataRating(RMSSD_borders, RMSSD)
 	dataRating(SDNN_borders, SDNN)
 	dataRating(PNN50_borders, pNN50)

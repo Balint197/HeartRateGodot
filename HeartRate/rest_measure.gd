@@ -30,9 +30,13 @@ func _on_Timer_timeout():
 		results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
 
 		logResults()
-
-		Globals.restSDNN = SDNN
-		# @TODO add others...	
 		
+		Globals.restHR = HR
+		Globals.restRMSSD = RMSSD
+		Globals.restSDNN = SDNN
+		Globals.restPNN50 = pNN50
+		Globals.restPNN20 = pNN20
+		Globals.restSI = SI
+
 		$Timer.stop()
 		get_tree().change_scene("res://HeartRate/menu.tscn")
