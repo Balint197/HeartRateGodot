@@ -10,8 +10,8 @@
 [ext_resource path="res://sprites/tilesheet_complete_2X.png" type="Texture" id=8]
 [ext_resource path="res://games/topdown_shooter/HP_bar.tscn" type="PackedScene" id=9]
 [ext_resource path="res://sprites/white.png" type="Texture" id=10]
-[ext_resource path="res://sprites/light_cone_inverted.png" type="Texture" id=11]
-[ext_resource path="res://games/topdown_shooter/bur.shader" type="Shader" id=12]
+[ext_resource path="res://sprites/light_cone_shader.png" type="Texture" id=11]
+[ext_resource path="res://games/topdown_shooter/blur.shader" type="Shader" id=12]
 [ext_resource path="res://games/topdown_shooter/pixelize.shader" type="Shader" id=13]
 
 [sub_resource type="NavigationPolygon" id=1]
@@ -764,17 +764,18 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 } ]
 1/z_index = 0
 
-[sub_resource type="ShaderMaterial" id=120]
+[sub_resource type="ShaderMaterial" id=121]
 shader = ExtResource( 13 )
 shader_param/size_x = 0.001
 shader_param/size_y = 0.001
 
-[sub_resource type="ShaderMaterial" id=121]
+[sub_resource type="ShaderMaterial" id=120]
 shader = ExtResource( 12 )
-shader_param/amount = 2.282
-shader_param/darkness = 0.66
+shader_param/base = Color( 0.356863, 0.356863, 0.356863, 1 )
+shader_param/amount = 3.0
+shader_param/vignette = ExtResource( 11 )
 
-[sub_resource type="Animation" id=122]
+[sub_resource type="Animation" id=124]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("Pixelize:material:shader_param/size_x")
@@ -819,11 +820,12 @@ __meta__ = {
 "_edit_lock_": true
 }
 folder_location = "C:/HeartRateLogs"
+health = 100
 GameType = "Simple adaptive difficulty"
 basic_game = "Simple timer"
 
 [node name="player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 272.595, 544.757 )
+position = Vector2( 235.508, 557.485 )
 fire_rate = 1.0
 bulletspray = 8
 
@@ -1023,7 +1025,7 @@ margin_bottom = 79.4975
 
 [node name="Pixelize" type="TextureRect" parent="."]
 visible = false
-material = SubResource( 120 )
+material = SubResource( 121 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1387.0
@@ -1037,29 +1039,24 @@ __meta__ = {
 }
 
 [node name="Blur" type="TextureRect" parent="."]
-material = SubResource( 121 )
+material = SubResource( 120 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1250.0
-margin_top = -1500.0
-margin_right = 2846.0
-margin_bottom = 2596.0
-grow_horizontal = 0
-grow_vertical = 0
-rect_pivot_offset = Vector2( 1520, 2040 )
-texture = ExtResource( 11 )
+margin_left = -474.561
+margin_top = -192.813
+margin_right = 1061.44
+margin_bottom = 1343.19
+rect_scale = Vector2( 2, 2 )
+rect_pivot_offset = Vector2( 670, 760 )
+texture = ExtResource( 10 )
 expand = true
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
-
 [node name="pixelizeAnimationPlayer" type="AnimationPlayer" parent="."]
-anims/pixelize = SubResource( 122 )
+anims/pixelize = SubResource( 124 )
 [connection signal="timeout" from="Navigation2D/ai_Timer" to="." method="_on_ai_Timer_timeout"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]
 [connection signal="timeout" from="HR_Timer" to="." method="_on_HR_Timer_timeout"]

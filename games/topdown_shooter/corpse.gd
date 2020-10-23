@@ -2,6 +2,8 @@ extends Sprite
 
 func _ready():
 	$bloodParticles.emitting = true
+	$bodyParticles.emitting = true
 
-func _on_AnimationPlayer_animation_finished(_anim_name):
+
+func _on_Timer_timeout():
 	queue_free()
