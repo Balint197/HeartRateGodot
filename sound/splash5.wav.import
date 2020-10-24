@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/splash5.wav-415043905f579510cc20ea5028f10484.sample"
+
+[deps]
+
+source_file="res://sound/splash5.wav"
+dest_files=[ "res://.import/splash5.wav-415043905f579510cc20ea5028f10484.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

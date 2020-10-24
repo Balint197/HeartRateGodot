@@ -40,7 +40,7 @@ func shoot():
 	get_tree().get_root().add_child(bullet)
 	can_fire = false
 	firetimer.start()
-	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 10)
+	get_tree().get_root().get_node("topdown_shooter").get_node("Camera2D").shake(0.1, 30, 20)
 	flash.emitting = true
 
 	$AnimationPlayer.play("reload")

@@ -106,8 +106,10 @@ fire={
 
 [layer_names]
 
+2d_render/layer_1="lit"
 2d_physics/layer_1="player"
 2d_physics/layer_2="obstacle"
+2d_render/layer_3="unlit"
 2d_physics/layer_3="enemy"
 2d_physics/layer_4="bullet"
 2d_physics/layer_5="level_side"

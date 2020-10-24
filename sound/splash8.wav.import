@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/splash8.wav-9b687583b1f16487ea5fdb2202346b15.sample"
+
+[deps]
+
+source_file="res://sound/splash8.wav"
+dest_files=[ "res://.import/splash8.wav-9b687583b1f16487ea5fdb2202346b15.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

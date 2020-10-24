@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://games/topdown_shooter/player_onedir.gd" type="Script" id=1]
 [ext_resource path="res://sprites/playerHand.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://sprites/gun.png" type="Texture" id=4]
 [ext_resource path="res://sprites/light_cone.png" type="Texture" id=5]
 [ext_resource path="res://sprites/playerLight.png" type="Texture" id=6]
+[ext_resource path="res://sound/reload.wav" type="AudioStream" id=7]
+[ext_resource path="res://sound/shot1.wav" type="AudioStream" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 23.6414
@@ -125,6 +127,30 @@ tracks/4/keys = {
 "update": 0,
 "values": [ Vector2( -8, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
 }
+tracks/5/type = "value"
+tracks/5/path = NodePath("reloadSFX:playing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("shotSFX:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
 
 [sub_resource type="Animation" id=7]
 length = 0.4
@@ -215,10 +241,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("spr_human:scale")
@@ -234,6 +260,7 @@ tracks/1/keys = {
 }
 
 [node name="player_onedir" type="KinematicBody2D"]
+light_mask = 4
 collision_mask = 2147483671
 script = ExtResource( 1 )
 fire_rate = 0.5
@@ -242,17 +269,19 @@ fire_rate = 0.5
 shape = SubResource( 1 )
 
 [node name="spr_human" type="Sprite" parent="."]
-position = Vector2( -8, 0 )
+light_mask = 4
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 3 )
 
 [node name="emptyHand" type="Sprite" parent="spr_human"]
+light_mask = 4
 position = Vector2( 7.06667, -36.3464 )
 z_index = -1
 texture = ExtResource( 2 )
 offset = Vector2( 10, 8 )
 
 [node name="gunHand" type="Sprite" parent="spr_human"]
+light_mask = 4
 position = Vector2( -1, 37 )
 rotation = -0.122173
 z_index = -1
@@ -261,8 +290,9 @@ offset = Vector2( 9, -8 )
 flip_v = true
 
 [node name="gun" type="Sprite" parent="spr_human/gunHand"]
+light_mask = 4
 position = Vector2( 27, -14 )
-rotation = 0.0698132
+rotation = 0.0436332
 texture = ExtResource( 4 )
 offset = Vector2( 24, 0 )
 
@@ -274,6 +304,7 @@ __meta__ = {
 }
 
 [node name="flash" type="Particles2D" parent="spr_human/gunHand/gun/Muzzle"]
+light_mask = 4
 scale = Vector2( 0.5, 0.5 )
 emitting = false
 amount = 50
@@ -307,10 +338,19 @@ shadow_filter = 5
 shadow_filter_smooth = 12.0
 
 [node name="playerLight" type="Light2D" parent="."]
+light_mask = -2147483647
 texture = ExtResource( 6 )
 texture_scale = 4.0
 shadow_enabled = true
 shadow_gradient_length = 7.0
 shadow_filter = 1
 shadow_filter_smooth = 2.0
+
+[node name="reloadSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+
+[node name="shotSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+
+[node name="hurtSFX" type="AudioStreamPlayer2D" parent="."]
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]
