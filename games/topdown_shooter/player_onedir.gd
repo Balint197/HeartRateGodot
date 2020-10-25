@@ -6,6 +6,23 @@ export var fire_rate = 0.2
 export var bulletspray = 50
 var velocity = Vector2()
 
+var hurt1 = preload("res://sound/hurt1.wav")
+var hurt2 = preload("res://sound/hurt2.wav")
+var hurt3 = preload("res://sound/hurt3.wav")
+var hurt4 = preload("res://sound/hurt4.wav")
+var hurt5 = preload("res://sound/hurt5.wav")
+
+var hurt_array = [hurt1, hurt2, hurt3, hurt4, hurt5]
+
+var damage1 = preload("res://sound/damage1.wav")
+var damage2 = preload("res://sound/damage2.wav")
+var damage3 = preload("res://sound/damage3.wav")
+var damage4 = preload("res://sound/damage4.wav")
+var damage5 = preload("res://sound/damage5.wav")
+var damage6 = preload("res://sound/damage6.wav")
+
+var damage_array = [damage1, damage2, damage3, damage4, damage5, damage6]
+
 onready var Muzzle = $spr_human/gunHand/gun/Muzzle/
 onready var flash = $spr_human/gunHand/gun/Muzzle/flash
 
@@ -63,3 +80,13 @@ func _physics_process(_delta):
 
 func _on_firetimer_timeout():
 	can_fire = true
+
+func hurtSound():
+	randomize()
+	var hurt_number = rand_range(0, hurt_array.size())
+	$hurtSFX.stream = hurt_array[hurt_number]
+	$hurtSFX.play()
+	
+	var damage_number = rand_range(0, damage_array.size())
+	$hitSFX.stream = damage_array[damage_number]
+	$hitSFX.play()

@@ -10,7 +10,7 @@
 [ext_resource path="res://sound/shot1.wav" type="AudioStream" id=8]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 23.6414
+radius = 11.8686
 
 [sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 0.909804, 0.0941176, 0.0941176, 1, 0.776471, 0.796078, 0.0980392, 1 )
@@ -353,4 +353,6 @@ stream = ExtResource( 7 )
 stream = ExtResource( 8 )
 
 [node name="hurtSFX" type="AudioStreamPlayer2D" parent="."]
+
+[node name="hitSFX" type="AudioStreamPlayer2D" parent="."]
 [connection signal="timeout" from="firetimer" to="." method="_on_firetimer_timeout"]

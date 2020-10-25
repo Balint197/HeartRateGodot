@@ -169,6 +169,11 @@ func _on_hit_player():
 
 		$pixelizeAnimationPlayer.play("pixelize")
 
+		$player.hurtSound()
+
+		for enemy in enemies_node.get_children():
+			enemy.knockBack()
+
 		if health == 0:
 			game_end()
 

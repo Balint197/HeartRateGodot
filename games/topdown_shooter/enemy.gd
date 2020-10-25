@@ -4,10 +4,12 @@ signal hit_player
 
 export var speed = 200
 export var damageDistance = 50
+export var closeToPlayer = 100 # if it should be knocked back to prevent player being stuck
+export var knockBackValue = 100
 
 var texture_0_0 = preload("res://sprites/enemies/0_0.png")
 var texture_0_1 = preload("res://sprites/enemies/0_1.png")
-#var texture_1_0 = preload("res://sprites/enemies/1_0.png")
+#var texture_1_0 = preload("res://sprites/enemies/1_0.png") # used for player
 #var texture_1_1 = preload("res://sprites/enemies/1_1.png")
 var texture_2_0 = preload("res://sprites/enemies/2_0.png")
 var texture_2_1 = preload("res://sprites/enemies/2_1.png")
@@ -24,13 +26,11 @@ var texture_7_1 = preload("res://sprites/enemies/7_1.png")
 var texture_8_0 = preload("res://sprites/enemies/8_0.png")
 var texture_8_1 = preload("res://sprites/enemies/8_1.png")
 
-
-
 var texture_array_0 = [texture_0_0, texture_2_0, texture_3_0, texture_4_0, texture_5_0, texture_6_0, texture_7_0, texture_8_0]
 var texture_array_1 = [texture_0_1, texture_2_1, texture_3_1, texture_4_1, texture_5_1, texture_6_1, texture_7_1, texture_8_1]
 
 onready var control_node = get_tree().get_root().get_node("topdown_shooter")
-onready var player = get_tree().get_root().get_node("topdown_shooter").get_node("player")
+onready var player: KinematicBody2D = get_tree().get_root().get_node("topdown_shooter").get_node("player")
 onready var corpse = preload("res://games/topdown_shooter/corpse.tscn")
 
 var path: = PoolVector2Array() setget set_path
@@ -51,13 +51,13 @@ func _physics_process(delta):
 		look_at(path[0])
 	if player.get_global_position().distance_to(get_global_position()) < damageDistance:
 		emit_signal("hit_player")
+	
 
 func move_along_path(distance: float):
 	var start_point = position
 	for _i in range(path.size()):
 		var distance_to_next = start_point.distance_to(path[0])
 		if distance <= distance_to_next and distance >= 0.0:
-#			position = start_point.linear_interpolate(path[0], distance / distance_to_next) 
 			var idealposition = start_point.linear_interpolate(path[0], distance / distance_to_next) 
 			var _collided = move_and_slide((idealposition - get_global_position()) * 70)
 			break
@@ -80,3 +80,8 @@ func hit():
 	corpse_instance.position = get_global_position()
 	get_tree().get_root().get_node("topdown_shooter").add_child(corpse_instance)
 	queue_free()
+
+func knockBack():
+	if closeToPlayer > player.get_global_position().distance_to(get_global_position()):
+		move_and_slide((get_global_position() - player.get_global_position()) * knockBackValue)
+		#move_and_slide((idealposition - get_global_position()) * 70)
