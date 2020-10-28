@@ -97,7 +97,7 @@ func _ready():
 	initFile(folder_location)
 	
 	# add first row to CSV
-	var titleRow = ["Data_number","HR","RMMSD","SDNN","pNN50","pNN20","SI"]
+	var titleRow = ["spawnTimer_wait_time","HR","RMMSD","SDNN","pNN50","pNN20","SI"]
 	results_arr.append(titleRow)
 	results_file.open(folder_location.plus_file(results_filename), results_file.WRITE)
 	results_file.store_csv_line(results_arr[0],";")
@@ -120,8 +120,10 @@ func _on_HR_Timer_timeout():
 	SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 	
 	# writing results to array
-	results_arr.append([dataNumber,HR,RMSSD,SDNN,pNN50,pNN20,SI])
+#	results_arr.append([dataNumber,HR,RMSSD,SDNN,pNN50,pNN20,SI]) # datanumber version
 	dataNumber += 1
+
+	results_arr.append([spawnTimer.wait_time,HR,RMSSD,SDNN,pNN50,pNN20,SI])
 
 	logResults()
 	adjustMinMax()
