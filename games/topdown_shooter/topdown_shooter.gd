@@ -144,7 +144,8 @@ func spawnEnemy():
 func _on_spawnTimer_timeout():
 	if GameType == "Simple timer":
 		spawnEnemy()
-		spawnTimer.wait_time -= simpleSpawnTimeDecrease
+#		if spawnTimer.wait_time >= 0.5:
+#			spawnTimer.wait_time -= simpleSpawnTimeDecrease
 	if GameType == "Simple adaptive difficulty" && $enemies.get_child_count() < SimpleAdaptiveEnemies:
 		spawnEnemy()
 		# TODO increase number of allowed enemies over time / score 
@@ -226,3 +227,12 @@ func adjustSpawn(): # TODO add others, weighted based on previous measure
 	if SDNN > targetValue:		# high stress -> decrease difficulty
 		var HRdifference = (SDNN - targetValue) / HRrange # 0-1, % of difference from desired
 		spawnTimer.wait_time += HRSpawnTimeChange * HRdifference
+
+
+func _on_gameLength_timer_timeout():
+	game_end()
+
+
+func _on_change_difficulty_timer_timeout():
+	if GameType == "Simple timer" && spawnTimer.wait_time >= 1:
+		spawnTimer.wait_time -= simpleSpawnTimeDecrease

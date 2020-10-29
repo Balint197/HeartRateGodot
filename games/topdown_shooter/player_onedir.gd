@@ -90,3 +90,5 @@ func hurtSound():
 	var damage_number = rand_range(0, damage_array.size())
 	$hitSFX.stream = damage_array[damage_number]
 	$hitSFX.play()
+	
+	$hurtbuzzSFX.play()

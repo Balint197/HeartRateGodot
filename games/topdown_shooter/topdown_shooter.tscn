@@ -895,14 +895,16 @@ __meta__ = {
 "_edit_lock_": true
 }
 folder_location = "C:/HeartRateLogs"
-health = 100
-GameType = "Simple adaptive difficulty"
+health = 30
+GameType = "Simple timer"
 basic_game = "Simple timer"
+simpleSpawnTimeDecrease = 0.1
 
 [node name="player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 209.508, 574.485 )
+position = Vector2( 241.006, 558.106 )
+bullet_speed = 1200
 fire_rate = 1.0
-bulletspray = 8
+bulletspray = 7
 
 [node name="obstacles" type="Node2D" parent="."]
 
@@ -1081,12 +1083,20 @@ autostart = true
 
 [node name="spawnTimer" type="Timer" parent="."]
 
+[node name="change_difficulty_timer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
 [node name="HR_Timer" type="Timer" parent="."]
 autostart = true
 
 [node name="level_Timer" type="Timer" parent="."]
 
 [node name="hit_timer" type="Timer" parent="."]
+
+[node name="gameLength_timer" type="Timer" parent="."]
+wait_time = 240.0
+autostart = true
 
 [node name="Blur" type="TextureRect" parent="."]
 material = SubResource( 132 )
@@ -1125,6 +1135,8 @@ margin_left = 91.7499
 margin_top = 42.7004
 margin_right = 535.75
 margin_bottom = 73.7004
+max_value = 100.0
+value = 100.0
 
 [node name="pixelizeAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/pixelize = SubResource( 134 )
@@ -1140,6 +1152,8 @@ volume_db = -18.461
 pitch_scale = 0.69
 [connection signal="timeout" from="Navigation2D/ai_Timer" to="." method="_on_ai_Timer_timeout"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]
+[connection signal="timeout" from="change_difficulty_timer" to="." method="_on_change_difficulty_timer_timeout"]
 [connection signal="timeout" from="HR_Timer" to="." method="_on_HR_Timer_timeout"]
 [connection signal="timeout" from="level_Timer" to="." method="_on_level_Timer_timeout"]
 [connection signal="timeout" from="hit_timer" to="." method="_on_hit_timer_timeout"]
+[connection signal="timeout" from="gameLength_timer" to="." method="_on_gameLength_timer_timeout"]
