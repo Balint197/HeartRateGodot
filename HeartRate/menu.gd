@@ -35,6 +35,5 @@ func _on_task2Button_pressed():
 	Globals.tasksdone += 1
 	get_tree().change_scene("res://games/topdown_shooter/topdown_shooter.tscn")
 
-
 func _on_Button_pressed():
 	get_tree().quit()

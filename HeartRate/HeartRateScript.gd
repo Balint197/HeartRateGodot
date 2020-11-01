@@ -88,44 +88,41 @@ func initFile(path):
 		var file_name = dir.get_next()
 		while file_name != "":
 			if !dir.current_is_dir() && file_name.get_extension() == "txt": # IBI only?
-				print("Found file: " + file_name)
-				print("File extension: " + file_name.get_extension())
+#				print("Found file: " + file_name)
+#				print("File extension: " + file_name.get_extension())
 
 				var file = File.new()
 				date_modified = file.get_modified_time(path.plus_file(file_name))
-				print("File last modified: " + str(date_modified) + "\n")
+#				print("File last modified: " + str(date_modified) + "\n")
 				
 				if date_modified > latest_date:
 					latest_date = date_modified
 					latest_file = file_name
 
 			file_name = dir.get_next()
-		print("Latest file: " + latest_file + "\n")
+		#print("Latest file: " + latest_file + "\n")
 	else:
 		print("An error occurred when trying to access the path.")
 
 func updateRR():
-
-
 	var IBI_file = File.new()
+
 	# testing if the file is being written by HeartRate program
-	if !IBI_file.file_exists(folder_location.plus_file("Reading.file")): 
+	var fileOpenError = IBI_file.open(folder_location.plus_file(latest_file), IBI_file.READ)
+	if fileOpenError != OK:
+		print("File open error: ", fileOpenError)
+	if fileOpenError == OK:
+		IBI_file.seek(filePos)
 
-		var fileOpenError = IBI_file.open(folder_location.plus_file(latest_file), IBI_file.READ)
-		if fileOpenError != OK:
-			print("File open error: " + fileOpenError)
-		if fileOpenError == OK:
-			IBI_file.seek(filePos)
+		while not IBI_file.eof_reached():
+			var IBI_line = IBI_file.get_line()
+			if IBI_line != "":	# needed for last line (\n in HeartRate program)
+				RR_arr.append(int(IBI_line))
 
-			while not IBI_file.eof_reached():
-				var IBI_line = IBI_file.get_line()
-				if IBI_line != "":	# needed for last line (\n in HeartRate program)
-					RR_arr.append(int(IBI_line))
+		filePos = IBI_file.get_position()
 
-			filePos = IBI_file.get_position()
-
-			IBI_size = RR_arr.size()
-			IBI_file.close()
+		IBI_size = RR_arr.size()
+		IBI_file.close()
 
 
 	RR_use_amount = 0

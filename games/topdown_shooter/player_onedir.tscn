@@ -345,7 +345,6 @@ anims/hit = SubResource( 9 )
 position = Vector2( -1, 5.99658 )
 texture = ExtResource( 5 )
 offset = Vector2( 512, 0 )
-energy = 0.8
 shadow_enabled = true
 shadow_gradient_length = 3.0
 shadow_filter = 5

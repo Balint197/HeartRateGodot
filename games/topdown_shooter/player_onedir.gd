@@ -41,13 +41,13 @@ func _process(_delta):
 func get_input():
 	velocity = Vector2()
 	if Input.is_action_pressed('ui_down'):
-		velocity = Vector2(-speed/3, 0).rotated(rotation)
+		velocity = Vector2(-speed/2, 0).rotated(rotation)
 	if Input.is_action_pressed('ui_up'):
 		velocity = Vector2(speed, 0).rotated(rotation)
 	if Input.is_action_pressed('ui_right'):
-		velocity += Vector2(0, speed/3).rotated(rotation)
+		velocity += Vector2(0, speed/2).rotated(rotation)
 	if Input.is_action_pressed('ui_left'):
-		velocity += Vector2(0, -speed/3).rotated(rotation)
+		velocity += Vector2(0, -speed/2).rotated(rotation)
 	if Input.is_action_just_pressed('fire') && can_fire:
 		shoot()
 
@@ -68,10 +68,7 @@ func _physics_process(_delta):
 	if dir.length() > 5:
 		rotation = dir.angle()
 		velocity = move_and_slide(velocity)
-		
-#		for i in get_slide_count():
-#			var collision = get_slide_collision(i)
-#			print("Collided with: ", collision.collider.name)
+
 	if $AnimationPlayer.current_animation != "reload" && velocity != Vector2(0,0):
 		$AnimationPlayer.play("walk")
 
