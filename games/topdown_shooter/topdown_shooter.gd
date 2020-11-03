@@ -83,7 +83,7 @@ func _ready():
 		"Simple timer":
 			spawnTimer.wait_time = spawnTimeInitial
 		"Simple adaptive difficulty":
-			pass
+			spawnTimer.wait_time = spawnTimeInitial
 		"Level progression":
 			levelChangeTimer.wait_time = levelChangeTime
 			levelChangeTimer.start()
@@ -234,10 +234,10 @@ func adjustMinMax():
 func adjustSpawn(): # TODO add others, weighted based on previous measure
 	if SDNN > targetValue:		# low stress -> increase difficulty (decrease time)
 		var HRdifference = (SDNN - targetValue) / HRrange # ~+- 0-1, % of difference from desired
-		if spawnTimer.wait_time - (HRSpawnTimeChange * HRdifference) >= 1:
+		if spawnTimer.wait_time - (HRSpawnTimeChange * HRdifference) >= 2:
 			spawnTimer.wait_time -= HRSpawnTimeChange * HRdifference
 		else:
-			spawnTimer.wait_time = 1
+			spawnTimer.wait_time = 2
 
 	if SDNN < targetValue:		# high stress -> decrease difficulty (increase time)
 		var HRdifference = (targetValue - SDNN) / HRrange # ~+- 0-1, % of difference from desired
