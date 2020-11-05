@@ -12,7 +12,7 @@
 [ext_resource path="res://sound/hurtBuzz.wav" type="AudioStream" id=10]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 11.8686
+radius = 14.2228
 
 [sub_resource type="Gradient" id=2]
 colors = PoolColorArray( 0.909804, 0.0941176, 0.0941176, 1, 0.776471, 0.796078, 0.0980392, 1 )
@@ -311,7 +311,6 @@ texture = ExtResource( 4 )
 offset = Vector2( 24, 0 )
 
 [node name="Muzzle" type="Position2D" parent="spr_human/gunHand/gun"]
-position = Vector2( 30, 0 )
 scale = Vector2( 4, 4 )
 __meta__ = {
 "_edit_group_": true
@@ -319,6 +318,7 @@ __meta__ = {
 
 [node name="flash" type="Particles2D" parent="spr_human/gunHand/gun/Muzzle"]
 light_mask = 4
+position = Vector2( 10, 0 )
 scale = Vector2( 0.5, 0.5 )
 emitting = false
 amount = 50

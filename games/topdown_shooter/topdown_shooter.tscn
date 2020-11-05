@@ -1,4 +1,4 @@
-[gd_scene load_steps=148 format=2]
+[gd_scene load_steps=147 format=2]
 
 [ext_resource path="res://games/topdown_shooter/level_side_block.tscn" type="PackedScene" id=1]
 [ext_resource path="res://games/topdown_shooter/TileMap.tscn" type="PackedScene" id=3]
@@ -12,7 +12,6 @@
 [ext_resource path="res://sprites/light_cone_shader.png" type="Texture" id=11]
 [ext_resource path="res://games/topdown_shooter/blur.shader" type="Shader" id=12]
 [ext_resource path="res://games/topdown_shooter/pixelize.shader" type="Shader" id=13]
-[ext_resource path="res://sound/drum.ogg" type="AudioStream" id=14]
 [ext_resource path="res://sound/ambience1.ogg" type="AudioStream" id=15]
 
 [sub_resource type="NavigationPolygon" id=1]
@@ -846,8 +845,8 @@ shader_param/vignette = ExtResource( 11 )
 
 [sub_resource type="ShaderMaterial" id=132]
 shader = ExtResource( 13 )
-shader_param/size_x = 0.01
-shader_param/size_y = 0.02
+shader_param/size_x = 0.001
+shader_param/size_y = 0.001
 shader_param/base = Color( 0.356863, 0.356863, 0.356863, 1 )
 
 [sub_resource type="Animation" id=133]
@@ -897,13 +896,14 @@ __meta__ = {
 folder_location = "C:/HeartRateLogs"
 health = 30
 HR_initial_difficulty = 0.6
-GameType = "Simple adaptive difficulty"
+GameType = "Heart And Simple Adaptive"
 basic_game = "Simple adaptive difficulty"
-HR_game = "Heart adaptive difficulty"
+HR_game = "Heart And Simple Adaptive"
 simpleSpawnTimeDecrease = 0.1
-HRSpawnTimeChange = 3.0
-spawnTimeInitial = 3
-SimpleAdaptiveEnemies = 3
+HRSpawnTimeChange = 2.0
+HRSpawnTimeChange_short = 0.5
+spawnTimeInitial = 6
+AdaptiveEnemies = 4
 
 [node name="player" parent="." instance=ExtResource( 7 )]
 position = Vector2( 298.989, 510.023 )
@@ -1074,6 +1074,10 @@ autostart = true
 
 [node name="spawnTimer" type="Timer" parent="."]
 
+[node name="spawnAdjustTimer" type="Timer" parent="."]
+wait_time = 3.0
+autostart = true
+
 [node name="change_difficulty_timer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
@@ -1138,13 +1142,9 @@ anims/pixelize = SubResource( 133 )
 stream = ExtResource( 15 )
 volume_db = -18.0
 autoplay = true
-
-[node name="drum" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 14 )
-volume_db = -18.461
-pitch_scale = 0.69
 [connection signal="timeout" from="Navigation2D/ai_Timer" to="." method="_on_ai_Timer_timeout"]
 [connection signal="timeout" from="spawnTimer" to="." method="_on_spawnTimer_timeout"]
+[connection signal="timeout" from="spawnAdjustTimer" to="." method="_on_spawnAdjustTimer_timeout"]
 [connection signal="timeout" from="change_difficulty_timer" to="." method="_on_change_difficulty_timer_timeout"]
 [connection signal="timeout" from="HR_Timer" to="." method="_on_HR_Timer_timeout"]
 [connection signal="timeout" from="level_Timer" to="." method="_on_level_Timer_timeout"]

@@ -5,62 +5,69 @@ extends Node
 onready var RR_use_amount = 0
 export (int, 1, 999999999) var RR_use_time = 30000
 
+onready var RR_use_amount_short = 0
+export (int, 1, 999999999) var RR_use_time_short = 5000
+
 # !!! modify values here, export is broken (gives null sometimes)
-export (Dictionary) var HR_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
-
-export (Dictionary) var RMSSD_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
-
-export (Dictionary) var SDNN_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
-
-export (Dictionary) var PNN50_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
-
-export (Dictionary) var PNN20_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
-
-export (Dictionary) var SI_borders = {
-	0: 0,
-	1: 50,
-	2: 100,
-	3: 150
-}
+# unused
+#export (Dictionary) var HR_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
+#
+#export (Dictionary) var RMSSD_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
+#
+#export (Dictionary) var SDNN_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
+#
+#export (Dictionary) var PNN50_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
+#
+#export (Dictionary) var PNN20_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
+#
+#export (Dictionary) var SI_borders = {
+#	0: 0,
+#	1: 50,
+#	2: 100,
+#	3: 150
+#}
 
 ### INIT VARS ###
 
 onready var currentRR = 0
 onready var RR_average = 0
+onready var RR_average_short = 0
 onready var HR = 0
 onready var RMSSD = 0
 onready var SDNN = 0
+onready var SDNN_short = 0
 onready var pNN50: float = 0
 onready var pNN20: float = 0
 onready var SI = 0
 
 onready var RR_arr = []
 onready var RR_used_arr = []
+onready var RR_used_arr_short = []
 onready var results_arr = []
 
 onready var latest_file
@@ -133,12 +140,24 @@ func updateRR():
 
 	RR_used_arr = RR_arr.slice(IBI_size - RR_use_amount, IBI_size) # takes last "RR_use_amount" values of IBI file
 
-	#print_debug(RR_used_arr)
+
+	RR_use_amount_short = 0
+	last_RR_sum = 0
+	while last_RR_sum < RR_use_time_short && RR_use_amount_short < IBI_size:
+		last_RR_sum += RR_arr[IBI_size - 1 - RR_use_amount_short]
+		RR_use_amount_short += 1
+
+	RR_used_arr_short = RR_arr.slice(IBI_size - RR_use_amount_short, IBI_size) # takes last "RR_use_amount_short" values of IBI file
 
 	RR_average = 0
 	for i in range(RR_use_amount):
 		RR_average += RR_used_arr[i]
 	RR_average = RR_average / RR_use_amount
+	
+	RR_average_short = 0
+	for i in range(RR_use_amount_short):
+		RR_average_short += RR_used_arr_short[i]
+	RR_average_short = RR_average_short / RR_use_amount_short
 
 	currentRR = str(RR_arr[IBI_size - 1])
 
@@ -176,6 +195,15 @@ func SDNN_func():
 	for i in range(RR_use_amount):
 		SDNN_calc += pow(RR_used_arr[i] - RR_average,2)
 	SDNN_calc = sqrt(SDNN_calc / RR_use_amount)
+
+	return SDNN_calc
+	
+func SDNN_short_func():
+	var SDNN_calc = 0
+	
+	for i in range(RR_use_amount_short):
+		SDNN_calc += pow(RR_used_arr_short[i] - RR_average_short,2)
+	SDNN_calc = sqrt(SDNN_calc / RR_use_amount_short)
 
 	return SDNN_calc
 	

@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
-export var speed = 300
+export var defaultSpeed = 300
+export var speedChange = 100
 export var bullet_speed = 1000
 export var fire_rate = 0.2
 export var bulletspray = 50
@@ -25,6 +26,7 @@ var damage_array = [damage1, damage2, damage3, damage4, damage5, damage6]
 
 onready var Muzzle = $spr_human/gunHand/gun/Muzzle/
 onready var flash = $spr_human/gunHand/gun/Muzzle/flash
+onready var speed = defaultSpeed
 
 #var Bullet = preload("res://games/topdown_shooter/bullet.tscn")
 var Bullet = preload("res://games/topdown_shooter/bullet_kine.tscn")

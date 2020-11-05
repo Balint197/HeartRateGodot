@@ -10,7 +10,7 @@ func _on_Timer_timeout():
 	if $ProgressBar.value == $ProgressBar.max_value:
 		initFile(folder_location)
 		# add first row to CSV
-		var titleRow = ["Data_number","HR","RMMSD","SDNN","pNN50","pNN20","SI"]
+		var titleRow = ["Data_number","HR","RMMSD","SDNN","SDNN_short","pNN50","pNN20","SI"]
 		results_arr.append(titleRow)
 		results_file.open(folder_location.plus_file(results_filename), results_file.WRITE)
 		results_file.store_csv_line(results_arr[0],";")
@@ -22,12 +22,13 @@ func _on_Timer_timeout():
 		HR = HR_func() 
 		RMSSD = RMSSD_func()
 		SDNN = SDNN_func()
+		SDNN_short = SDNN_short_func()
 		pNN50 = pNNX_func(50)
 		pNN20 = pNNX_func(20)
 		SI = SI_func()# Baevsky’s stress index square root (Kubios, normal)
 
 		# writing results to array
-		results_arr.append([1,HR,RMSSD,SDNN,pNN50,pNN20,SI])
+		results_arr.append([1,HR,RMSSD,SDNN,SDNN_short,pNN50,pNN20,SI])
 
 		logResults()
 		
