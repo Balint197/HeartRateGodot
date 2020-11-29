@@ -1,10 +1,9 @@
 extends "res://HeartRate/HeartRateScript.gd"
 
 export var health = 4
-export var pixelizeAmount = 0.05
 export var HR_initial_difficulty: float = 0.5 
-export var spawnTimeMin = 2
-export var spawnTimeMax = 8
+export var spawnTimeMin = 2.0
+export var spawnTimeMax = 8.0
 
 onready var player = $player
 onready var nav_2d = $Navigation2D
@@ -13,8 +12,8 @@ onready var enemies_node = get_node("enemies")
 onready var spawnTimer = $spawnTimer
 onready var levelChangeTimer = $level_Timer
 onready var currentLevel = 0
-onready var pixelize = $Pixelize
 onready var blur = $Blur
+onready var blurTween = $Blur/blurTween
 onready var dataNumber = 0
 onready var targetValue = 0 # TODO make array? TODO do others...
 onready var SDNNrange = 0 # TODO calculations currently based on 50%+ difficulty
@@ -100,10 +99,10 @@ func _ready():
 #			SDNNrange = 133 - targetValue
 #			spawnTimer.wait_time = 3
 			targetValue = (Globals.minSDNN + Globals.maxSDNN) * (1 - HR_initial_difficulty)
-			SDNNrange = targetValue - Globals.minSDNN
+			SDNNrange = 1 * (targetValue - Globals.minSDNN)
 			print("targetValue: ", targetValue, "\nSDNNrange: ", SDNNrange)
 			targetValue_short = (Globals.minSDNN_short + Globals.maxSDNN_short) * (1 - HR_initial_difficulty)
-			SDNNrange_short = targetValue_short - Globals.minSDNN_short
+			SDNNrange_short = 1 * (targetValue_short - Globals.minSDNN_short)
 			print("targetValue_short: ", targetValue_short, "\nSDNNrange_short: ", SDNNrange_short)
 
 			spawnTimer.wait_time = spawnTimeInitial #(spawnTimeInitial + Globals.easy_game_level) * (1 - HR_initial_difficulty)
@@ -183,7 +182,6 @@ func _on_spawnTimer_timeout():
 		spawnEnemy()
 	if GameType == "Simple adaptive difficulty" && $enemies.get_child_count() < AdaptiveEnemies:
 		spawnEnemy()
-		# TODO increase number of allowed enemies over time / score 
 	if GameType == "Heart adaptive difficulty":
 		spawnEnemy()
 		spawnTimer.wait_time = timerSet
@@ -220,12 +218,13 @@ func _on_hit_player():
 			game_end()
 
 func game_end():
-	if GameType == "Simple timer":
+	if Globals.gameType == "basic_game":
 		Globals.easy_game_level = spawnTimer.wait_time
 
 		print("HR: ", Globals.minHR, "-", Globals.maxHR)
 		print("RMSSD: ", Globals.minRMSSD, "-", Globals.maxRMSSD)
 		print("SDNN: ", Globals.minSDNN, "-", Globals.maxSDNN)
+		print("SDNN_short: ", Globals.minSDNN_short, "-", Globals.maxSDNN_short)
 		print("PNN50: ", Globals.minPNN50, "-", Globals.maxPNN50)
 		print("PNN20: ", Globals.minPNN20, "-", Globals.maxPNN20)
 		print("SI: ", Globals.minSI, "-", Globals.maxSI)
@@ -251,6 +250,8 @@ func adjustMinMax():
 		Globals.maxRMSSD = adjust_border(Globals.maxRMSSD, RMSSD, "max")
 		Globals.minSDNN = adjust_border(Globals.minSDNN, SDNN, "min")
 		Globals.maxSDNN = adjust_border(Globals.maxSDNN, SDNN, "max")
+		Globals.minSDNN_short = adjust_border(Globals.minSDNN_short, SDNN_short, "min")
+		Globals.maxSDNN_short = adjust_border(Globals.maxSDNN_short, SDNN_short, "max")
 		Globals.minPNN50 = adjust_border(Globals.minPNN50, pNN50, "min")
 		Globals.maxPNN50 = adjust_border(Globals.maxPNN50, pNN50, "max")
 		Globals.minPNN20 = adjust_border(Globals.minPNN20, pNN20, "min")
@@ -278,8 +279,8 @@ func adjustSpawn():
 #		HRdifference_short = (targetValue_short - SDNN_short) / SDNNrange_short # 0-1, % of difference from desired
 #		timerSet += spawnTimer.wait_time + (HRSpawnTimeChange_short * HRdifference_short)
 
-	HRdifference = (SDNN - targetValue) / SDNNrange # ~ 0 - 1 if SDNN > targetValue; 0 - -1 if SDNN < targetValue
-	HRdifference_short = (SDNN_short - targetValue_short) / SDNNrange_short # ~ 0 - 1 if SDNN > targetValue; 0 - -1 if SDNN < targetValue
+	HRdifference = (SDNN - targetValue) / SDNNrange # -1 - 1 || + if low stress (SDNN > targetValue); - if high stress (SDNN < targetValue)
+	HRdifference_short = (SDNN_short - targetValue_short) / SDNNrange_short
 	timerSet = spawnTimer.wait_time - (HRSpawnTimeChange * HRdifference) - (HRSpawnTimeChange_short * HRdifference_short)
 
 	if timerSet < spawnTimeMin:
@@ -292,18 +293,20 @@ func adjustSpawn():
 	if percent > 1: percent = 1
 	if percent < -1: percent = -1
 
-	print(percent)
+#	print(percent)
 	
 	player.speed = player.defaultSpeed - (player.speedChange * percent)
-	blur.material.set_shader_param("amount", 3 - (2 * percent))
+
+#	blur.material.set_shader_param("amount", 3 + percent)
+	blurTween.interpolate_property(blur.material, "shader_param/amount", blur.material.get_shader_param("amount"), 2.5 + (1.5 * percent), 1, Tween.TRANS_EXPO, Tween.EASE_OUT)
+	blurTween.start()
 
 func _on_gameLength_timer_timeout():
 	game_end()
 
 func _on_change_difficulty_timer_timeout():
-	if GameType == "Simple timer" && spawnTimer.wait_time >= 1.5:
+	if (GameType == "Simple timer" || GameType == "Simple adaptive difficulty") && spawnTimer.wait_time >= spawnTimeMin:
 		spawnTimer.wait_time -= simpleSpawnTimeDecrease
-
 
 func _on_spawnAdjustTimer_timeout():
 	if GameType == "Heart adaptive difficulty" || GameType == "Heart And Simple Adaptive":

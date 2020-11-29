@@ -371,7 +371,7 @@ stream = ExtResource( 8 )
 
 [node name="stepSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 9 )
-volume_db = -11.48
+volume_db = -13.0
 
 [node name="hurtbuzzSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 10 )

@@ -840,7 +840,7 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 [sub_resource type="ShaderMaterial" id=131]
 shader = ExtResource( 12 )
 shader_param/base = Color( 0.356863, 0.356863, 0.356863, 1 )
-shader_param/amount = 3.0
+shader_param/amount = 1.0
 shader_param/vignette = ExtResource( 11 )
 
 [sub_resource type="ShaderMaterial" id=132]
@@ -893,10 +893,12 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_lock_": true
 }
+RR_use_time_short = 8000
 folder_location = "C:/HeartRateLogs"
-health = 30
+health = 15
 HR_initial_difficulty = 0.6
-GameType = "Heart And Simple Adaptive"
+spawnTimeMin = 1.5
+GameType = "Simple timer"
 basic_game = "Simple adaptive difficulty"
 HR_game = "Heart And Simple Adaptive"
 simpleSpawnTimeDecrease = 0.1
@@ -906,7 +908,8 @@ spawnTimeInitial = 6
 AdaptiveEnemies = 4
 
 [node name="player" parent="." instance=ExtResource( 7 )]
-position = Vector2( 298.989, 510.023 )
+position = Vector2( 298.989, 509.023 )
+speedChange = 140
 bullet_speed = 1200
 fire_rate = 1.0
 bulletspray = 7
@@ -1090,7 +1093,7 @@ autostart = true
 [node name="hit_timer" type="Timer" parent="."]
 
 [node name="gameLength_timer" type="Timer" parent="."]
-wait_time = 300.0
+wait_time = 240.0
 autostart = true
 
 [node name="Blur" type="TextureRect" parent="."]
@@ -1110,6 +1113,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="blurTween" type="Tween" parent="Blur"]
+
 [node name="Pixelize" type="TextureRect" parent="."]
 visible = false
 material = SubResource( 132 )
@@ -1127,10 +1132,10 @@ __meta__ = {
 
 [node name="HP_bar" parent="." instance=ExtResource( 9 )]
 modulate = Color( 1, 1, 1, 0.411765 )
-margin_left = 52.0
-margin_top = 31.0
-margin_right = 254.0
-margin_bottom = 62.0
+margin_left = 28.0
+margin_top = 26.0
+margin_right = 366.0
+margin_bottom = 67.0
 step = 0.01
 
 [node name="HPtween" type="Tween" parent="HP_bar"]

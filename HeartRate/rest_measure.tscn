@@ -37,7 +37,7 @@ margin_left = -306.5
 margin_top = -24.0
 margin_right = 306.5
 margin_bottom = 24.0
-text = "Miután helyet foglalt, fut a mérőprogram, és úgy érzi, szívverése eléggé lelassult (kb. 30-60s), nyomja meg az alsó gombot. 
+text = "Miután helyet foglalt, fut a méroprogram, és úgy érzi, szívverése eléggé lelassult (kb. 30-60s), nyomja meg az alsó gombot. 
 
 A gomb megnyomása után maradjon nyugodt, ne mozogjon. A teszt egy perc után véget ér. "
 align = 1
@@ -69,7 +69,6 @@ margin_top = -76.0178
 margin_right = 297.5
 margin_bottom = -34.0178
 max_value = 60.0
-value = 59.0
 percent_visible = false
 __meta__ = {
 "_edit_use_anchors_": false

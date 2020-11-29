@@ -5,7 +5,7 @@
 [ext_resource path="res://sprites/playerLight.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 5.03796, 5.04653 )
+extents = Vector2( 6, 6 )
 
 [node name="bullet" type="KinematicBody2D" groups=[
 "bullet",
