@@ -252,7 +252,8 @@ func drawCharts():
 	# TODO read last N values from CSV, or based on time -> easyCharts realtime plot bug...
 
 	#$LineChart2.source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
-	$LineChart2.plot()
+	#$LineChart2.plot()
+	pass
 
 func logResults():	# CSV (for plotting and review)
 	
