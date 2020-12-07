@@ -140,7 +140,7 @@ func updateRR():
 
 	RR_used_arr = RR_arr.slice(IBI_size - RR_use_amount, IBI_size) # takes last "RR_use_amount" values of IBI file
 
-
+	
 	RR_use_amount_short = 0
 	last_RR_sum = 0
 	while last_RR_sum < RR_use_time_short && RR_use_amount_short < IBI_size:
@@ -208,7 +208,7 @@ func SDNN_short_func():
 	return SDNN_calc
 	
 func SI_func():
-	var Mo = 0 		# RR median -> should be mode in original paper?
+	var Mo = 0 		# RR median -> should be mode in original paper
 	var AMo = 0		# amplitude of the modal value
 	var MxDMn = (float(RR_used_arr.max()) - float(RR_used_arr.min()))/1000 # variability width
 
@@ -249,7 +249,7 @@ func SI_func():
 	return SI_calc
 
 func drawCharts():
-	# TODO read last N values from CSV, or based on time -> easyCharts plot bug...
+	# TODO read last N values from CSV, or based on time -> easyCharts realtime plot bug...
 
 	#$LineChart2.source = "C:/Users/hajna/HeartRateLogs/heartRateLog_2020. 9. 16. 0-15-34.csv"
 	$LineChart2.plot()

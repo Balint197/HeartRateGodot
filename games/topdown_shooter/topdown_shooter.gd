@@ -16,9 +16,9 @@ onready var blur = $Blur
 onready var blurTween = $Blur/blurTween
 onready var dataNumber = 0
 onready var targetValue = 0 # TODO make array? TODO do others...
-onready var SDNNrange = 0 # TODO calculations currently based on 50%+ difficulty
+onready var SDNNrange = 0 
 onready var targetValue_short = 0 # TODO make array? TODO do others...
-onready var SDNNrange_short = 0 # TODO calculations currently based on 50%+ difficulty
+onready var SDNNrange_short = 0 
 onready var HPtween = $HP_bar/HPtween
 onready var timerSet = 0.0
 
@@ -94,10 +94,6 @@ func _ready():
 			levelChangeTimer.wait_time = levelChangeTime
 			levelChangeTimer.start()
 		"Heart adaptive difficulty":
-# 			custom value testing
-#			targetValue = 50 
-#			SDNNrange = 133 - targetValue
-#			spawnTimer.wait_time = 3
 			targetValue = (Globals.minSDNN + Globals.maxSDNN) * (1 - HR_initial_difficulty)
 			SDNNrange = 1 * (targetValue - Globals.minSDNN)
 			print("targetValue: ", targetValue, "\nSDNNrange: ", SDNNrange)
@@ -107,12 +103,7 @@ func _ready():
 
 			spawnTimer.wait_time = spawnTimeInitial #(spawnTimeInitial + Globals.easy_game_level) * (1 - HR_initial_difficulty)
 		"Heart And Simple Adaptive":
-# 			custom value testing
-#			targetValue = 50 
-#			targetValue_short = 50 
-#			SDNNrange = 133 - targetValue
-#			SDNNrange_short = 133 - targetValue_short
-#			spawnTimer.wait_time = 3
+
 			targetValue = (Globals.minSDNN + Globals.maxSDNN) * (1 - HR_initial_difficulty)
 			SDNNrange = targetValue - Globals.minSDNN
 			print("targetValue: ", targetValue, "\nSDNNrange: ", SDNNrange)

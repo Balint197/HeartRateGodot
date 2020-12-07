@@ -840,7 +840,7 @@ points = PoolVector2Array( 0, 0, 128, 0, 128, 128, 0, 128 )
 [sub_resource type="ShaderMaterial" id=131]
 shader = ExtResource( 12 )
 shader_param/base = Color( 0.356863, 0.356863, 0.356863, 1 )
-shader_param/amount = 1.0
+shader_param/amount = 2.5
 shader_param/vignette = ExtResource( 11 )
 
 [sub_resource type="ShaderMaterial" id=132]

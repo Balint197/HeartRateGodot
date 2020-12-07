@@ -45,11 +45,11 @@ func _on_Timer_timeout():
 	logResults()
 	#drawCharts()
 
-	dataRating(HR_borders, HR)
-	dataRating(RMSSD_borders, RMSSD)
-	dataRating(SDNN_borders, SDNN)
-	dataRating(PNN50_borders, pNN50)
-	dataRating(PNN20_borders, pNN20)
-	dataRating(SI_borders, SI)
+#	dataRating(HR_borders, HR)
+#	dataRating(RMSSD_borders, RMSSD)
+#	dataRating(SDNN_borders, SDNN)
+#	dataRating(PNN50_borders, pNN50)
+#	dataRating(PNN20_borders, pNN20)
+#	dataRating(SI_borders, SI)
 
 
